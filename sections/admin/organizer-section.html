@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organizer Section</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="bg-gray-50">
+    <div id="organizerSection" class="section p-4">
+        <!-- Events content to be refreshed -->
+        <div id="eventsList" class="bg-white rounded-xl shadow-md p-6 animate-card">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-bold text-gray-800">Organizer</h2>
+                <button id="openNewEventModal" class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg smooth-transition flex items-center">
+                    <i data-feather="plus" class="mr-2"></i> Add Event
+                </button>
+            </div>
+            <p class="text-gray-600 mb-6">Organize tasks, events, and schedules.</p>
+            <div class="space-y-4" id="eventsListBody">
+                <div class="flex items-start p-3 bg-gray-50 rounded-lg" data-event-id="1">
+                    <i data-feather="bookmark" class="text-blue-500 mr-4 mt-1"></i>
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-medium text-gray-800">Team Building Event</h3>
+                            <div>
+                                <button class="edit-event-btn text-blue-500 hover:text-blue-600 mr-2">
+                                    <i data-feather="edit" class="w-4 h-4"></i>
+                                </button>
+                                <button class="delete-event-btn text-red-500 hover:text-red-600">
+                                    <i data-feather="trash-2" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-500">2025-10-20 • All Day</p>
+                    </div>
+                </div>
+                <div class="flex items-start p-3 bg-gray-50 rounded-lg" data-event-id="2">
+                    <i data-feather="bookmark" class="text-blue-500 mr-4 mt-1"></i>
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-medium text-gray-800">Product Demo</h3>
+                            <div>
+                                <button class="edit-event-btn text-blue-500 hover:text-blue-600 mr-2">
+                                    <i data-feather="edit" class="w-4 h-4"></i>
+                                </button>
+                                <button class="delete-event-btn text-red-500 hover:text-red-600">
+                                    <i data-feather="trash-2" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-500">2025-10-25 • 3:00 PM - 5:00 PM</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- New/Edit Event Modal -->
+        <div id="eventModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center transition-opacity duration-300 z-[999998]" style="display: none;">
+            <div class="bg-white rounded-lg shadow-lg w-full max-w-[358px] sm:max-w-[410px] md:max-w-[461px] p-2 sm:p-3 transform transition-all duration-300 z-[999999]">
+                <div class="flex items-center justify-between mb-1 sm:mb-2">
+                    <h2 class="text-2xs sm:text-base font-bold text-gray-800" id="modalTitle">Add Event</h2>
+                    <button class="text-gray-500 hover:text-gray-700 text-lg sm:text-xl font-semibold" id="closeModal">&times;</button>
+                </div>
+                <div class="mb-1 sm:mb-2">
+                    <form id="eventForm">
+                        <div class="mb-1 sm:mb-2">
+                            <label class="block text-2xs sm:text-xs font-medium text-gray-700 mb-0.5 sm:mb-1" for="eventTitle">Event Title</label>
+                            <input type="text" id="eventTitle" class="w-full border border-gray-300 rounded-lg px-1.5 sm:px-2 py-0.5 sm:py-1 text-2xs sm:text-xs focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter event title" required>
+                        </div>
+                        <div class="mb-1 sm:mb-2">
+                            <label class="block text-2xs sm:text-xs font-medium text-gray-700 mb-0.5 sm:mb-1" for="eventDateTime">Date & Time</label>
+                            <input type="datetime-local" id="eventDateTime" class="w-24 sm:w-32 border border-gray-300 rounded-lg px-1.5 sm:px-2 py-0.5 sm:py-1 text-2xs sm:text-xs focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        </div>
+                        <div class="mb-1 sm:mb-2">
+                            <label class="block text-2xs sm:text-xs font-medium text-gray-700 mb-0.5 sm:mb-1" for="eventDuration">Duration</label>
+                            <select id="eventDuration" class="w-full border border-gray-300 rounded-lg px-1.5 sm:px-2 py-0.5 sm:py-1 text-2xs sm:text-xs focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                <option value="all-day">All Day</option>
+                                <option value="1-hour">1 Hour</option>
+                                <option value="2-hours">2 Hours</option>
+                                <option value="custom">Custom</option>
+                            </select>
+                        </div>
+                        <div class="mb-1 sm:mb-2" id="customDurationGroup" style="display: none;">
+                            <label class="block text-2xs sm:text-xs font-medium text-gray-700 mb-0.5 sm:mb-1" for="customDuration">Custom Duration (hours)</label>
+                            <input type="number" id="customDuration" class="w-24 sm:w-32 border border-gray-300 rounded-lg px-1.5 sm:px-2 py-0.5 sm:py-1 text-2xs sm:text-xs focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter duration in hours" min="0.5" step="0.5">
+                        </div>
+                        <div class="mb-1 sm:mb-2">
+                            <label class="block text-2xs sm:text-xs font-medium text-gray-700 mb-0.5 sm:mb-1" for="eventNotes">Notes (Optional)</label>
+                            <textarea id="eventNotes" class="w-full border border-gray-300 rounded-lg px-1.5 sm:px-2 py-0.5 sm:py-1 text-2xs sm:text-xs focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter additional notes..."></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="flex justify-end space-x-1 sm:space-x-2">
+                    <button type="button" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-0.5 sm:py-1 px-2 sm:px-3 rounded-lg transition-colors duration-200 text-2xs sm:text-xs" id="cancelModal">Cancel</button>
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-0.5 sm:py-1 px-2 sm:px-3 rounded-lg transition-colors duration-200 text-2xs sm:text-xs" form="eventForm" id="saveModal">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Feather icons
+        feather.replace();
+
+        // Modal and form elements
+        const modal = document.getElementById('eventModal');
+        const form = document.getElementById('eventForm');
+        const titleInput = document.getElementById('eventTitle');
+        const dateTimeInput = document.getElementById('eventDateTime');
+        const durationSelect = document.getElementById('eventDuration');
+        const customDurationGroup = document.getElementById('customDurationGroup');
+        const customDurationInput = document.getElementById('customDuration');
+        const notesTextarea = document.getElementById('eventNotes');
+        let isEditMode = false;
+        let currentEventId = null;
+
+        // Mock event data
+        const mockEvents = {
+            1: { title: 'Team Building Event', dateTime: '2025-10-20T00:00', duration: 'all-day', notes: '' },
+            2: { title: 'Product Demo', dateTime: '2025-10-25T15:00', duration: '2-hours', notes: 'Demo for stakeholders.' }
+        };
+        let nextEventId = 3;
+
+        // Format date and duration for display
+        function formatDateTime(dateTime, duration) {
+            const date = new Date(dateTime);
+            const dateStr = date.toISOString().split('T')[0];
+            if (duration === 'all-day') return `${dateStr} • All Day`;
+            const startTime = date.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+            if (duration === 'custom') return `${dateStr} • ${startTime} (Custom)`;
+            const hours = duration === '1-hour' ? 1 : 2;
+            const endDate = new Date(date.getTime() + hours * 60 * 60 * 1000);
+            const endTime = endDate.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+            return `${dateStr} • ${startTime} - ${endTime}`;
+        }
+
+        // Refresh events list
+        function refreshEventsList() {
+            const listBody = document.getElementById('eventsListBody');
+            listBody.innerHTML = Object.entries(mockEvents).map(([id, e]) => `
+                <div class="flex items-start p-3 bg-gray-50 rounded-lg" data-event-id="${id}">
+                    <i data-feather="bookmark" class="text-blue-500 mr-4 mt-1"></i>
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-medium text-gray-800">${e.title}</h3>
+                            <div>
+                                <button class="edit-event-btn text-blue-500 hover:text-blue-600 mr-2">
+                                    <i data-feather="edit" class="w-4 h-4"></i>
+                                </button>
+                                <button class="delete-event-btn text-red-500 hover:text-red-600">
+                                    <i data-feather="trash-2" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-500">${formatDateTime(e.dateTime, e.duration)}</p>
+                    </div>
+                </div>`).join('');
+            feather.replace();
+        }
+
+        // Toggle custom duration input
+        durationSelect.addEventListener('change', () => {
+            customDurationGroup.style.display = durationSelect.value === 'custom' ? 'block' : 'none';
+        });
+
+        // Open modal
+        function openModal(editData = null) {
+            isEditMode = !!editData;
+            currentEventId = editData ? editData.id : null;
+            document.getElementById('modalTitle').textContent = isEditMode ? 'Edit Event' : 'Add Event';
+            form.reset();
+            customDurationGroup.style.display = 'none';
+            if (isEditMode) {
+                titleInput.value = editData.title;
+                dateTimeInput.value = editData.dateTime;
+                durationSelect.value = editData.duration;
+                customDurationInput.value = editData.customDuration || '';
+                customDurationGroup.style.display = editData.duration === 'custom' ? 'block' : 'none';
+                notesTextarea.value = editData.notes || '';
+            }
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('show'), 10);
+        }
+
+        // Close modal
+        function closeModal() {
+            modal.classList.remove('show');
+            setTimeout(() => modal.style.display = 'none', 300);
+            isEditMode = false;
+            currentEventId = null;
+        }
+
+        // Submit form
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = {
+                title: titleInput.value,
+                dateTime: dateTimeInput.value,
+                duration: durationSelect.value,
+                customDuration: durationSelect.value === 'custom' ? parseFloat(customDurationInput.value) : null,
+                notes: notesTextarea.value
+            };
+            if (!formData.title || !formData.dateTime || !formData.duration) {
+                Toastify({ text: 'Please fill all required fields', style: { background: '#ef4444' } }).showToast();
+                return;
+            }
+            if (formData.duration === 'custom' && (!formData.customDuration || formData.customDuration <= 0)) {
+                Toastify({ text: 'Please enter a valid custom duration', style: { background: '#ef4444' } }).showToast();
+                return;
+            }
+            if (isEditMode) {
+                mockEvents[currentEventId] = formData;
+            } else {
+                mockEvents[nextEventId] = formData;
+                nextEventId++;
+            }
+            Toastify({ text: isEditMode ? 'Event updated!' : 'Event added!', style: { background: '#10b981' } }).showToast();
+            closeModal();
+            refreshEventsList();
+        });
+
+        // Delegated events
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('#openNewEventModal')) {
+                openModal();
+            }
+            if (e.target.closest('.edit-event-btn')) {
+                const card = e.target.closest('[data-event-id]');
+                const id = card.dataset.eventId;
+                const e = mockEvents[id];
+                if (e) {
+                    e.id = id;
+                    openModal(e);
+                }
+            }
+            if (e.target.closest('.delete-event-btn')) {
+                const card = e.target.closest('[data-event-id]');
+                if (confirm('Delete this event?')) {
+                    delete mockEvents[card.dataset.eventId];
+                    Toastify({ text: 'Event deleted', style: { background: '#10b981' } }).showToast();
+                    refreshEventsList();
+                }
+            }
+            if (e.target.closest('#closeModal') || e.target.closest('#cancelModal')) {
+                closeModal();
+            }
+        });
+
+        // Escape key to close modal
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.style.display === 'flex') closeModal();
+        });
+    </script>
+</body>
+</html>

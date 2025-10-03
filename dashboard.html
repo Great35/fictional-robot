@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LookSharp Manager Pro - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="scripts.js"></script>
+</head>
+<body class="bg-gray-50">
+    <!-- Dashboard -->
+    <div class="min-h-screen">
+        <div class="container mx-auto px-3 sm:px-6 lg:px-8 py-8 sm:py-12">
+            <div class="bg-white rounded-2xl shadow-md p-6 sm:p-8 text-center max-w-lg mx-auto">
+                <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4">Welcome to LookSharp Manager Pro</h2>
+                <p class="text-gray-600 mb-6 text-sm sm:text-base" id="dashboardMessage">You are logged in as <span id="role"></span></p>
+                <button onclick="logout()" class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-6 rounded-lg shadow-md smooth-transition" aria-label="Log out">
+                    Log Out
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load dashboard based on role
+        function loadDashboard() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const role = urlParams.get('role') || 'user'; // Default to 'user' if no role
+            document.getElementById('role').textContent = role === 'admin' ? 'Administrator' : 'User';
+            feather.replace();
+        }
+
+        // Logout and navigate to login
+        function logout() {
+            document.body.classList.add('opacity-0');
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 300); // Match CSS animation duration
+        }
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', loadDashboard);
+    </script>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard Section</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="bg-gray-50">
+    <div id="dashboardSection" class="section p-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+            <div class="animate-card bg-white rounded-xl shadow-md p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Upcoming Meetings</p>
+                        <h3 class="text-2xl font-bold text-gray-800 mt-1">3</h3>
+                    </div>
+                    <div class="p-3 bg-blue-50 rounded-lg">
+                        <i data-feather="calendar" class="text-blue-500"></i>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <a href="#" class="view-all-link text-blue-500 text-sm font-medium flex items-center">
+                        View all
+                        <i data-feather="chevron-right" class="ml-1 w-4 h-4"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="animate-card bg-white rounded-xl shadow-md p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Pending Tasks</p>
+                        <h3 class="text-2xl font-bold text-gray-800 mt-1">8</h3>
+                    </div>
+                    <div class="p-3 bg-yellow-50 rounded-lg">
+                        <i data-feather="check-circle" class="text-yellow-500"></i>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <a href="#" class="view-all-link text-blue-500 text-sm font-medium flex items-center">
+                        View all
+                        <i data-feather="chevron-right" class="ml-1 w-4 h-4"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="animate-card bg-white rounded-xl shadow-md p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Audits Assigned</p>
+                        <h3 class="text-2xl font-bold text-gray-800 mt-1">4</h3>
+                    </div>
+                    <div class="p-3 bg-purple-50 rounded-lg">
+                        <i data-feather="file-text" class="text-purple-500"></i>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <a href="#" class="view-all-link text-blue-500 text-sm font-medium flex items-center">
+                        View all
+                        <i data-feather="chevron-right" class="ml-1 w-4 h-4"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="bg-white rounded-xl shadow-md p-6 mb-6 animate-card">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-bold text-gray-800">Your Meetings</h2>
+                <a href="#" class="view-all-link text-blue-500 text-sm font-medium flex items-center">
+                    View all
+                    <i data-feather="chevron-right" class="ml-1 w-4 h-4"></i>
+                </a>
+            </div>
+            <div class="space-y-4">
+                <div class="flex items-start p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                    <div class="flex-shrink-0 p-2 bg-blue-50 rounded-lg mr-4">
+                        <i data-feather="calendar" class="text-blue-500"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-medium text-gray-800">Team Sync</h3>
+                        <p class="text-sm text-gray-500">Tomorrow • 1:00 PM - 2:00 PM</p>
+                        <div class="flex items-center mt-2">
+                            <div class="flex -space-x-2 mr-3">
+                                <img class="w-6 h-6 rounded-full border-2 border-white" src="http://static.photos/people/200x200/1" alt="">
+                                <img class="w-6 h-6 rounded-full border-2 border-white" src="http://static.photos/people/200x200/2" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <button class="join-meeting-btn ml-4 px-3 py-1 bg-blue-50 text-blue-500 text-xs font-medium rounded-full">
+                        Join
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="bg-white rounded-xl shadow-md p-6 animate-card">
+            <h2 class="text-lg font-bold text-gray-800 mb-4">Quick Actions</h2>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <button class="quick-action-btn flex flex-col items-center justify-center p-4 border border-gray-200 rounded-xl hover:bg-blue-50 hover:border-blue-200 transition-colors">
+                    <i data-feather="plus" class="text-blue-500 mb-2"></i>
+                    <span class="text-sm font-medium text-gray-700">Join Meeting</span>
+                </button>
+                <button class="quick-action-btn flex flex-col items-center justify-center p-4 border border-gray-200 rounded-xl hover:bg-blue-50 hover:border-blue-200 transition-colors">
+                    <i data-feather="check-circle" class="text-blue-500 mb-2"></i>
+                    <span class="text-sm font-medium text-gray-700">Complete Task</span>
+                </button>
+                <button class="quick-action-btn flex flex-col items-center justify-center p-4 border border-gray-200 rounded-xl hover:bg-blue-50 hover:border-blue-200 transition-colors">
+                    <i data-feather="bookmark" class="text-blue-500 mb-2"></i>
+                    <span class="text-sm font-medium text-gray-700">View Organizer</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Feather icons
+        feather.replace();
+
+        // Handle "View all" links
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.view-all-link')) {
+                e.preventDefault();
+                const section = e.target.closest('.view-all-link').closest('.grid, .space-y-4').previousElementSibling?.querySelector('h2, p')?.textContent.toLowerCase().replace('your ', '');
+                Toastify({
+                    text: `Navigating to ${section}... (Not implemented for users)`,
+                    duration: 3000,
+                    style: { background: '#10b981' }
+                }).showToast();
+            }
+        });
+
+        // Handle "Join" button
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.join-meeting-btn')) {
+                e.preventDefault();
+                Toastify({
+                    text: 'Joining meeting... (Not implemented for users)',
+                    duration: 3000,
+                    style: { background: '#10b981' }
+                }).showToast();
+            }
+        });
+
+        // Handle Quick Actions buttons
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.quick-action-btn')) {
+                e.preventDefault();
+                const action = e.target.closest('.quick-action-btn').querySelector('span').textContent;
+                Toastify({
+                    text: `${action}... (Not implemented for users)`,
+                    duration: 3000,
+                    style: { background: '#10b981' }
+                }).showToast();
+            }
+        });
+    </script>
+</body>
+</html>

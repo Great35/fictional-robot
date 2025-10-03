@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LookSharp Manager Pro - Create Account</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="scripts.js"></script>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen">
+        <div class="container mx-auto px-3 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-24">
+            <div class="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12">
+               <div class="w-full lg:w-1/2 mb-8 lg:mb-0 lg:pr-12">
+    <video class="w-full max-w-full max-w-md mx-auto rounded-2xl shadow-xl" autoplay loop muted playsinline loading="lazy">
+        <source src="https://cdn.pixabay.com/video/2021/09/11/88225-606079090_tiny.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+</div>
+                <div class="w-full lg:w-1/2 bg-white rounded-2xl shadow-xl p-6 sm:p-8 max-w-md mx-auto fade-in card-hover">
+                    <div class="text-center mb-6 sm:mb-8">
+                        <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">Create Account</h2>
+                        <p class="text-gray-500 text-sm sm:text-base">Join LookSharp Manager Pro</p>
+                    </div>
+                    <form>
+                        <div class="mb-4 sm:mb-6">
+                            <label for="username" class="block text-gray-700 font-medium mb-2 text-sm sm:text-base">Username</label>
+                            <input type="text" id="username" class="w-full min-w-[200px] px-4 py-2 sm:py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none smooth-transition" placeholder="Your username">
+                        </div>
+                        <div class="mb-4 sm:mb-6">
+                            <label for="newEmail" class="block text-gray-700 font-medium mb-2 text-sm sm:text-base">Email</label>
+                            <input type="email" id="newEmail" class="w-full min-w-[200px] px-4 py-2 sm:py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none smooth-transition" placeholder="your@email.com">
+                        </div>
+                        <div class="mb-4 sm:mb-6">
+                            <label for="newPassword" class="block text-gray-700 font-medium mb-2 text-sm sm:text-base">Password</label>
+                            <input type="password" id="newPassword" class="w-full min-w-[200px] px-4 py-2 sm:py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none smooth-transition" placeholder="••••••••">
+                        </div>
+                        <div class="mb-4 sm:mb-6">
+                            <label for="newRole" class="block text-gray-700 font-medium mb-2 text-sm sm:text-base">Role</label>
+                            <select id="newRole" class="w-full min-w-[200px] px-4 py-2 sm:py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none smooth-transition">
+                                <option value="" disabled selected>Select a role</option>
+                                <option value="admin">Admin</option>
+                                <option value="user">User</option>
+                            </select>
+                        </div>
+                        <button type="button" onclick="createAccount()" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 sm:py-3 px-4 rounded-lg shadow-md smooth-transition hover:shadow-lg flex items-center justify-center" aria-label="Create account">
+                            <i data-feather="user-plus" class="mr-2 w-5 h-5"></i> Create Account
+                        </button>
+                        <div class="text-center mt-4">
+                            <a href="#" onclick="backToLogin()" class="text-blue-500 hover:text-blue-600 text-sm font-medium smooth-transition">Back to Login</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function createAccount() {
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('newEmail').value;
+            const password = document.getElementById('newPassword').value;
+            const role = document.getElementById('newRole').value;
+
+            if (!username) { showToast('Username is required'); return; }
+            if (!email) { showToast('Email is required'); return; }
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showToast('Invalid email format'); return; }
+            if (!password) { showToast('Password is required'); return; }
+            if (password.length < 6) { showToast('Password must be at least 6 characters'); return; }
+            if (!role) { showToast('Please select a role'); return; }
+
+            // Simulate storing user data (replace with fetch('/api/register', ...))
+            localStorage.setItem('user_' + email, JSON.stringify({ username, email, role }));
+            showToast('Account created successfully!', false);
+            document.body.classList.add('opacity-0');
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 300);
+        }
+
+        function backToLogin() {
+            document.body.classList.add('opacity-0');
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 300);
+        }
+    </script>
+</body>
+</html>

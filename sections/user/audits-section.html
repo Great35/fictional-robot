@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Audits Section</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="bg-gray-50">
+    <div id="auditsSection" class="section p-4">
+        <div id="auditsList" class="bg-white rounded-xl shadow-md p-6 animate-card">
+            <h2 class="text-lg font-bold text-gray-800 mb-4">Audits</h2>
+            <p class="text-gray-600 mb-6">View assigned audits and reports.</p>
+            <div class="space-y-4" id="auditsListBody">
+                <div class="p-4 bg-gray-50 rounded-lg" data-audit-id="1">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-medium text-gray-800 mb-2">Personal Compliance Audit</h3>
+                        <button class="view-audit-btn text-blue-500 hover:text-blue-600">
+                            <i data-feather="eye" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-1">Date: 2025-11-10</p>
+                    <p class="text-sm text-gray-600">Status: Pending</p>
+                </div>
+                <div class="p-4 bg-gray-50 rounded-lg" data-audit-id="2">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-medium text-gray-800 mb-2">Team Audit Review</h3>
+                        <button class="view-audit-btn text-blue-500 hover:text-blue-600">
+                            <i data-feather="eye" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-1">Date: 2025-10-15</p>
+                    <p class="text-sm text-gray-600">Status: Completed</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- View Audit Modal -->
+        <div id="auditModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center transition-opacity duration-300 z-[999998]" style="display: none;">
+            <div class="bg-white rounded-lg shadow-lg w-full max-w-[358px] sm:max-w-[410px] md:max-w-[461px] p-2 sm:p-3 transform transition-all duration-300 z-[999999]">
+                <div class="flex items-center justify-between mb-1 sm:mb-2">
+                    <h2 class="text-2xs sm:text-base font-bold text-gray-800" id="modalTitle">View Audit</h2>
+                    <button class="text-gray-500 hover:text-gray-700 text-lg sm:text-xl font-semibold" id="closeModal">&times;</button>
+                </div>
+                <div class="mb-1 sm:mb-2">
+                    <form id="auditForm">
+                        <div class="mb-1 sm:mb-2">
+                            <label class="block text-2xs sm:text-xs font-medium text-gray-700 mb-0.5 sm:mb-1" for="auditTitle">Audit Title</label>
+                            <input type="text" id="auditTitle" class="w-full border border-gray-300 rounded-lg px-1.5 sm:px-2 py-0.5 sm:py-1 text-2xs sm:text-xs bg-gray-100 cursor-not-allowed" readonly>
+                        </div>
+                        <div class="mb-1 sm:mb-2">
+                            <label class="block text-2xs sm:text-xs font-medium text-gray-700 mb-0.5 sm:mb-1" for="auditDate">Date</label>
+                            <input type="date" id="auditDate" class="w-24 sm:w-32 border border-gray-300 rounded-lg px-1.5 sm:px-2 py-0.5 sm:py-1 text-2xs sm:text-xs bg-gray-100 cursor-not-allowed" readonly>
+                        </div>
+                        <div class="mb-1 sm:mb-2">
+                            <label class="block text-2xs sm:text-xs font-medium text-gray-700 mb-0.5 sm:mb-1" for="auditStatus">Status</label>
+                            <select id="auditStatus" class="w-full border border-gray-300 rounded-lg px-1.5 sm:px-2 py-0.5 sm:py-1 text-2xs sm:text-xs bg-gray-100 cursor-not-allowed" disabled>
+                                <option value="Pending">Pending</option>
+                                <option value="Completed">Completed</option>
+                            </select>
+                        </div>
+                        <div class="mb-1 sm:mb-2">
+                            <label class="block text-2xs sm:text-xs font-medium text-gray-700 mb-0.5 sm:mb-1" for="auditNotes">Notes</label>
+                            <textarea id="auditNotes" class="w-full border border-gray-300 rounded-lg px-1.5 sm:px-2 py-0.5 sm:py-1 text-2xs sm:text-xs bg-gray-100 cursor-not-allowed" readonly></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="flex justify-end">
+                    <button type="button" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-0.5 sm:py-1 px-2 sm:px-3 rounded-lg transition-colors duration-200 text-2xs sm:text-xs" id="cancelModal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Feather icons
+        feather.replace();
+
+        // Modal and form elements
+        const modal = document.getElementById('auditModal');
+        const form = document.getElementById('auditForm');
+        const titleInput = document.getElementById('auditTitle');
+        const dateInput = document.getElementById('auditDate');
+        const statusSelect = document.getElementById('auditStatus');
+        const notesTextarea = document.getElementById('auditNotes');
+
+        // Mock audit data
+        const mockAudits = {
+            1: { title: 'Personal Compliance Audit', date: '2025-11-10', status: 'Pending', notes: '' },
+            2: { title: 'Team Audit Review', date: '2025-10-15', status: 'Completed', notes: 'Reviewed with team leads.' }
+        };
+
+        // Refresh the audits list
+        function refreshAuditsSection() {
+            const listBody = document.getElementById('auditsListBody');
+            listBody.innerHTML = Object.entries(mockAudits).map(([id, audit]) => `
+                <div class="p-4 bg-gray-50 rounded-lg" data-audit-id="${id}">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-medium text-gray-800 mb-2">${audit.title}</h3>
+                        <button class="view-audit-btn text-blue-500 hover:text-blue-600">
+                            <i data-feather="eye" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-1">Date: ${audit.date}</p>
+                    <p class="text-sm text-gray-600">Status: ${audit.status}</p>
+                </div>
+            `).join('');
+            feather.replace();
+        }
+
+        // Open modal
+        function openModal(auditId) {
+            const audit = mockAudits[auditId];
+            if (!audit) return;
+            titleInput.value = audit.title;
+            dateInput.value = audit.date;
+            statusSelect.value = audit.status;
+            notesTextarea.value = audit.notes || '';
+            document.getElementById('modalTitle').textContent = `View: ${audit.title}`;
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('show'), 10);
+        }
+
+        // Close modal
+        function closeModal() {
+            modal.classList.remove('show');
+            setTimeout(() => modal.style.display = 'none', 300);
+        }
+
+        // Delegated events
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.view-audit-btn')) {
+                const card = e.target.closest('[data-audit-id]');
+                const id = card.dataset.auditId;
+                openModal(id);
+            }
+            if (e.target.closest('#closeModal') || e.target.closest('#cancelModal')) {
+                closeModal();
+            }
+        });
+
+        // Escape key to close modal
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.style.display === 'flex') closeModal();
+        });
+    </script>
+</body>
+</html>

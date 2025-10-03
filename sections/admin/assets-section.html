@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assets Section</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="bg-gray-50">
+    <div id="assetsSection" class="section p-4">
+        <!-- Assets table content to be refreshed -->
+        <div id="assetsTable" class="bg-white rounded-xl shadow-md p-6 animate-card">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-bold text-gray-800">Assets</h2>
+                <button id="openNewAssetModal" class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg smooth-transition flex items-center">
+                    <i data-feather="plus" class="mr-2"></i> Add Asset
+                </button>
+            </div>
+            <p class="text-gray-600 mb-6">Manage company assets and resources.</p>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-gray-200">
+                            <th class="py-3 px-4 text-sm font-medium text-gray-500">Asset Name</th>
+                            <th class="py-3 px-4 text-sm font-medium text-gray-500">Type</th>
+                            <th class="py-3 px-4 text-sm font-medium text-gray-500">Status</th>
+                            <th class="py-3 px-4 text-sm font-medium text-gray-500">Assigned To</th>
+                            <th class="py-3 px-4 text-sm font-medium text-gray-500">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="assetsTableBody">
+                        <tr class="border-b border-gray-200 hover:bg-gray-50 transition-colors" data-asset-id="1">
+                            <td class="py-3 px-4 text-sm text-gray-800">Laptop Model X</td>
+                            <td class="py-3 px-4 text-sm text-gray-600">Hardware</td>
+                            <td class="py-3 px-4"><span class="px-2 py-1 bg-green-50 text-green-500 text-xs rounded-full">Available</span></td>
+                            <td class="py-3 px-4 text-sm text-gray-600">John Doe</td>
+                            <td class="py-3 px-4">
+                                <button class="edit-asset-btn text-blue-500 hover:text-blue-600 mr-2">
+                                    <i data-feather="edit" class="w-4 h-4"></i>
+                                </button>
+                                <button class="delete-asset-btn text-red-500 hover:text-red-600">
+                                    <i data-feather="trash-2" class="w-4 h-4"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-50 transition-colors" data-asset-id="2">
+                            <td class="py-3 px-4 text-sm text-gray-800">Software License Y</td>
+                            <td class="py-3 px-4 text-sm text-gray-600">Software</td>
+                            <td class="py-3 px-4"><span class="px-2 py-1 bg-red-50 text-red-500 text-xs rounded-full">Expired</span></td>
+                            <td class="py-3 px-4 text-sm text-gray-600">Jane Smith</td>
+                            <td class="py-3 px-4">
+                                <button class="edit-asset-btn text-blue-500 hover:text-blue-600 mr-2">
+                                    <i data-feather="edit" class="w-4 h-4"></i>
+                                </button>
+                                <button class="delete-asset-btn text-red-500 hover:text-red-600">
+                                    <i data-feather="trash-2" class="w-4 h-4"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- New/Edit Asset Modal -->
+        <div id="assetModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center transition-opacity duration-300 z-[999998]" style="display: none;">
+            <div class="bg-white rounded-lg shadow-lg w-full max-w-[358px] sm:max-w-[410px] md:max-w-[461px] p-2 sm:p-3 transform transition-all duration-300 z-[999999]">
+                <div class="flex items-center justify-between mb-1 sm:mb-2">
+                    <h2 class="text-2xs sm:text-base font-bold text-gray-800" id="modalTitle">Add Asset</h2>
+                    <button class="text-gray-500 hover:text-gray-700 text-lg sm:text-xl font-semibold" id="closeModal">&times;</button>
+                </div>
+                <div class="mb-1 sm:mb-2">
+                    <form id="assetForm">
+                        <div class="mb-1 sm:mb-2">
+                            <label class="block text-2xs sm:text-xs font-medium text-gray-700 mb-0.5 sm:mb-1" for="assetName">Asset Name</label>
+                            <input type="text" id="assetName" class="w-full border border-gray-300 rounded-lg px-1.5 sm:px-2 py-0.5 sm:py-1 text-2xs sm:text-xs focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter asset name" required>
+                        </div>
+                        <div class="mb-1 sm:mb-2">
+                            <label class="block text-2xs sm:text-xs font-medium text-gray-700 mb-0.5 sm:mb-1" for="assetType">Type</label>
+                            <select id="assetType" class="w-full border border-gray-300 rounded-lg px-1.5 sm:px-2 py-0.5 sm:py-1 text-2xs sm:text-xs focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                <option value="">Select asset type</option>
+                                <option value="Hardware">Hardware</option>
+                                <option value="Software">Software</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="mb-1 sm:mb-2">
+                            <label class="block text-2xs sm:text-xs font-medium text-gray-700 mb-0.5 sm:mb-1" for="assetStatus">Status</label>
+                            <select id="assetStatus" class="w-full border border-gray-300 rounded-lg px-1.5 sm:px-2 py-0.5 sm:py-1 text-2xs sm:text-xs focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                <option value="Available">Available</option>
+                                <option value="In Use">In Use</option>
+                                <option value="Expired">Expired</option>
+                                <option value="Maintenance">Maintenance</option>
+                            </select>
+                        </div>
+                        <div class="mb-1 sm:mb-2">
+                            <label class="block text-2xs sm:text-xs font-medium text-gray-700 mb-0.5 sm:mb-1" for="assignedTo">Assigned To</label>
+                            <select id="assignedTo" class="w-full border border-gray-300 rounded-lg px-1.5 sm:px-2 py-0.5 sm:py-1 text-2xs sm:text-xs focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                <option value="">Select assignee</option>
+                                <option value="john-doe">John Doe</option>
+                                <option value="jane-smith">Jane Smith</option>
+                                <option value="bob-lee">Bob Lee</option>
+                                <option value="alice-johnson">Alice Johnson</option>
+                                <option value="charlie-brown">Charlie Brown</option>
+                            </select>
+                        </div>
+                        <div class="mb-1 sm:mb-2">
+                            <label class="block text-2xs sm:text-xs font-medium text-gray-700 mb-0.5 sm:mb-1" for="assetNotes">Notes (Optional)</label>
+                            <textarea id="assetNotes" class="w-full border border-gray-300 rounded-lg px-1.5 sm:px-2 py-0.5 sm:py-1 text-2xs sm:text-xs focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter additional notes..."></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="flex justify-end space-x-1 sm:space-x-2">
+                    <button type="button" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-0.5 sm:py-1 px-2 sm:px-3 rounded-lg transition-colors duration-200 text-2xs sm:text-xs" id="cancelModal">Cancel</button>
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-0.5 sm:py-1 px-2 sm:px-3 rounded-lg transition-colors duration-200 text-2xs sm:text-xs" form="assetForm" id="saveModal">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Feather icons
+        feather.replace();
+
+        // Modal and form elements
+        const modal = document.getElementById('assetModal');
+        const form = document.getElementById('assetForm');
+        const nameInput = document.getElementById('assetName');
+        const typeSelect = document.getElementById('assetType');
+        const statusSelect = document.getElementById('assetStatus');
+        const assignedToSelect = document.getElementById('assignedTo');
+        const notesTextarea = document.getElementById('assetNotes');
+        let isEditMode = false;
+        let currentAssetId = null;
+
+        // Mock asset data
+        const mockAssets = {
+            1: { name: 'Laptop Model X', type: 'Hardware', status: 'Available', assignedTo: 'john-doe', notes: '' },
+            2: { name: 'Software License Y', type: 'Software', status: 'Expired', assignedTo: 'jane-smith', notes: 'License expired, needs renewal.' }
+        };
+        let nextAssetId = 3;
+
+        // Mock assignees data (reused from meetings-section.html)
+        const mockMembers = {
+            'john-doe': { name: 'John Doe' },
+            'jane-smith': { name: 'Jane Smith' },
+            'bob-lee': { name: 'Bob Lee' },
+            'alice-johnson': { name: 'Alice Johnson' },
+            'charlie-brown': { name: 'Charlie Brown' }
+        };
+
+        // Refresh assets table
+        function refreshAssetsTable() {
+            const tableBody = document.getElementById('assetsTableBody');
+            tableBody.innerHTML = Object.entries(mockAssets).map(([id, a]) => `
+                <tr class="border-b border-gray-200 hover:bg-gray-50 transition-colors" data-asset-id="${id}">
+                    <td class="py-3 px-4 text-sm text-gray-800">${a.name}</td>
+                    <td class="py-3 px-4 text-sm text-gray-600">${a.type}</td>
+                    <td class="py-3 px-4">
+                        <span class="px-2 py-1 text-xs rounded-full 
+                            ${a.status === 'Available' ? 'bg-green-50 text-green-500' : 
+                              a.status === 'Expired' ? 'bg-red-50 text-red-500' : 
+                              a.status === 'In Use' ? 'bg-blue-50 text-blue-500' : 
+                              'bg-yellow-50 text-yellow-500'}">
+                            ${a.status}
+                        </span>
+                    </td>
+                    <td class="py-3 px-4 text-sm text-gray-600">${mockMembers[a.assignedTo]?.name || 'Unassigned'}</td>
+                    <td class="py-3 px-4">
+                        <button class="edit-asset-btn text-blue-500 hover:text-blue-600 mr-2">
+                            <i data-feather="edit" class="w-4 h-4"></i>
+                        </button>
+                        <button class="delete-asset-btn text-red-500 hover:text-red-600">
+                            <i data-feather="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    </td>
+                </tr>`).join('');
+            feather.replace();
+        }
+
+        // Open modal
+        function openModal(editData = null) {
+            isEditMode = !!editData;
+            currentAssetId = editData ? editData.id : null;
+            document.getElementById('modalTitle').textContent = isEditMode ? 'Edit Asset' : 'Add Asset';
+            form.reset();
+            if (isEditMode) {
+                nameInput.value = editData.name;
+                typeSelect.value = editData.type;
+                statusSelect.value = editData.status;
+                assignedToSelect.value = editData.assignedTo;
+                notesTextarea.value = editData.notes || '';
+            }
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('show'), 10);
+        }
+
+        // Close modal
+        function closeModal() {
+            modal.classList.remove('show');
+            setTimeout(() => modal.style.display = 'none', 300);
+            isEditMode = false;
+            currentAssetId = null;
+        }
+
+        // Submit form
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = {
+                name: nameInput.value,
+                type: typeSelect.value,
+                status: statusSelect.value,
+                assignedTo: assignedToSelect.value,
+                notes: notesTextarea.value
+            };
+            if (!formData.name || !formData.type || !formData.status || !formData.assignedTo) {
+                Toastify({ text: 'Please fill all required fields', style: { background: '#ef4444' } }).showToast();
+                return;
+            }
+            if (isEditMode) {
+                mockAssets[currentAssetId] = formData;
+            } else {
+                mockAssets[nextAssetId] = formData;
+                nextAssetId++;
+            }
+            Toastify({ text: isEditMode ? 'Asset updated!' : 'Asset added!', style: { background: '#10b981' } }).showToast();
+            closeModal();
+            refreshAssetsTable();
+        });
+
+        // Delegated events
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('#openNewAssetModal')) {
+                openModal();
+            }
+            if (e.target.closest('.edit-asset-btn')) {
+                const row = e.target.closest('tr');
+                const id = row.dataset.assetId;
+                const a = mockAssets[id];
+                if (a) {
+                    a.id = id;
+                    openModal(a);
+                }
+            }
+            if (e.target.closest('.delete-asset-btn')) {
+                const row = e.target.closest('tr');
+                if (confirm('Delete this asset?')) {
+                    delete mockAssets[row.dataset.assetId];
+                    Toastify({ text: 'Asset deleted', style: { background: '#10b981' } }).showToast();
+                    refreshAssetsTable();
+                }
+            }
+            if (e.target.closest('#closeModal') || e.target.closest('#cancelModal')) {
+                closeModal();
+            }
+        });
+
+        // Escape key to close modal
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.style.display === 'flex') closeModal();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Meetings Section</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="bg-gray-50">
+    <div id="meetingsSection" class="section p-4">
+        <div id="meetingsTable" class="bg-white rounded-xl shadow-md p-6 animate-card">
+            <h2 class="text-lg font-bold text-gray-800 mb-4">Meetings</h2>
+            <p class="text-gray-600 mb-6">View and join your scheduled meetings.</p>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-gray-200">
+                            <th class="py-3 px-4 text-sm font-medium text-gray-500">Title</th>
+                            <th class="py-3 px-4 text-sm font-medium text-gray-500">Date & Time</th>
+                            <th class="py-3 px-4 text-sm font-medium text-gray-500">Participants</th>
+                            <th class="py-3 px-4 text-sm font-medium text-gray-500">Status</th>
+                            <th class="py-3 px-4 text-sm font-medium text-gray-500">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="meetingsTableBody">
+                        <tr class="border-b border-gray-200 hover:bg-gray-50 transition-colors" data-meeting-id="1">
+                            <td class="py-3 px-4 text-sm text-gray-800">Team Sync</td>
+                            <td class="py-3 px-4 text-sm text-gray-600">2025-10-04 • 11:00 AM</td>
+                            <td class="py-3 px-4 text-sm text-gray-600">You + 4 others</td>
+                            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-500 text-xs rounded-full">Scheduled</span></td>
+                            <td class="py-3 px-4">
+                                <button class="view-meeting-btn text-blue-500 hover:text-blue-600">
+                                    <i data-feather="eye" class="w-4 h-4"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-50 transition-colors" data-meeting-id="2">
+                            <td class="py-3 px-4 text-sm text-gray-800">Project Update</td>
+                            <td class="py-3 px-4 text-sm text-gray-600">2025-10-06 • 3:00 PM</td>
+                            <td class="py-3 px-4 text-sm text-gray-600">You + 2 others</td>
+                            <td class="py-3 px-4"><span class="px-2 py-1 bg-green-50 text-green-500 text-xs rounded-full">Ongoing</span></td>
+                            <td class="py-3 px-4">
+                                <button class="view-meeting-btn text-blue-500 hover:text-blue-600">
+                                    <i data-feather="eye" class="w-4 h-4"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- View Meeting Modal (Read-only) -->
+        <div id="meetingModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center transition-opacity duration-300 z-[999998]" style="display: none;">
+            <div class="bg-white rounded-lg shadow-lg w-full max-w-[358px] sm:max-w-[410px] md:max-w-[461px] p-2 sm:p-3 transform transition-all duration-300 z-[999999]">
+                <div class="flex items-center justify-between mb-1 sm:mb-2">
+                    <h2 class="text-2xs sm:text-base font-bold text-gray-800" id="modalTitle">View Meeting</h2>
+                    <button class="text-gray-500 hover:text-gray-700 text-lg sm:text-xl font-semibold" id="closeModal">&times;</button>
+                </div>
+                <div class="mb-1 sm:mb-2">
+                    <form id="meetingForm">
+                        <div class="mb-1 sm:mb-2">
+                            <label class="block text-2xs sm:text-xs font-medium text-gray-700 mb-0.5 sm:mb-1" for="meetingTitle">Meeting Title</label>
+                            <input type="text" id="meetingTitle" class="w-full border border-gray-300 rounded-lg px-1.5 sm:px-2 py-0.5 sm:py-1 text-2xs sm:text-xs bg-gray-100 cursor-not-allowed" readonly>
+                        </div>
+                        <div class="mb-1 sm:mb-2">
+                            <label class="block text-2xs sm:text-xs font-medium text-gray-700 mb-0.5 sm:mb-1" for="meetingDateTime">Date & Time</label>
+                            <input type="datetime-local" id="meetingDateTime" class="w-24 sm:w-32 border border-gray-300 rounded-lg px-1.5 sm:px-2 py-0.5 sm:py-1 text-2xs sm:text-xs bg-gray-100 cursor-not-allowed" readonly>
+                        </div>
+                        <div class="mb-1 sm:mb-2">
+                            <label class="block text-2xs sm:text-xs font-medium text-gray-700 mb-0.5 sm:mb-1" for="focalPoint">Focal Point</label>
+                            <select id="focalPoint" class="w-full border border-gray-300 rounded-lg px-1.5 sm:px-2 py-0.5 sm:py-1 text-2xs sm:text-xs bg-gray-100 cursor-not-allowed" disabled>
+                                <option value="">Select focal point</option>
+                                <option value="john-doe">John Doe (Marketing Lead)</option>
+                                <option value="jane-smith">Jane Smith (Project Manager)</option>
+                                <option value="bob-lee">Bob Lee (Dev Lead)</option>
+                            </select>
+                        </div>
+                        <div class="mb-1 sm:mb-2">
+                            <label class="block text-2xs sm:text-xs font-medium text-gray-700 mb-0.5 sm:mb-1">Members</label>
+                            <div class="selected-chips flex flex-wrap gap-1 sm:gap-2" id="selectedChips"></div>
+                        </div>
+                        <div class="mb-1 sm:mb-2">
+                            <label class="block text-2xs sm:text-xs font-medium text-gray-700 mb-0.5 sm:mb-1" for="meetingNotes">Notes/Agenda</label>
+                            <textarea id="meetingNotes" class="w-full border border-gray-300 rounded-lg px-1.5 sm:px-2 py-0.5 sm:py-1 text-2xs sm:text-xs bg-gray-100 cursor-not-allowed" readonly></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="flex justify-end space-x-1 sm:space-x-2">
+                    <button type="button" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-0.5 sm:py-1 px-2 sm:px-3 rounded-lg transition-colors duration-200 text-2xs sm:text-xs" id="cancelModal">Close</button>
+                    <button type="button" class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-0.5 sm:py-1 px-2 sm:px-3 rounded-lg transition-colors duration-200 text-2xs sm:text-xs" id="joinMeetingBtn">Join Meeting</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Feather icons
+        feather.replace();
+
+        // Modal and form elements
+        const modal = document.getElementById('meetingModal');
+        const form = document.getElementById('meetingForm');
+        const titleInput = document.getElementById('meetingTitle');
+        const dateTimeInput = document.getElementById('meetingDateTime');
+        const focalPointSelect = document.getElementById('focalPoint');
+        const selectedChips = document.getElementById('selectedChips');
+        const notesTextarea = document.getElementById('meetingNotes');
+        let currentMeetingId = null;
+
+        // Mock meeting data
+        const mockMeetings = {
+            1: { title: 'Team Sync', datetime: '2025-10-04T11:00', focalPoint: 'john-doe', members: ['john-doe', 'jane-smith', 'bob-lee'], notes: 'Weekly team update and progress sharing.', status: 'Scheduled' },
+            2: { title: 'Project Update', datetime: '2025-10-06T15:00', focalPoint: 'jane-smith', members: ['jane-smith', 'alice-johnson'], notes: 'Discuss project milestones and next steps.', status: 'Ongoing' }
+        };
+
+        // Mock member data for chips
+        const mockMembers = {
+            'john-doe': { name: 'John Doe', avatar: 'http://static.photos/people/200x200/1' },
+            'jane-smith': { name: 'Jane Smith', avatar: 'http://static.photos/people/200x200/2' },
+            'bob-lee': { name: 'Bob Lee', avatar: 'http://static.photos/people/200x200/3' },
+            'alice-johnson': { name: 'Alice Johnson', avatar: 'http://static.photos/people/200x200/4' }
+        };
+
+        // Refresh the meetings table
+        function refreshMeetingsSection() {
+            const tableBody = document.getElementById('meetingsTableBody');
+            tableBody.innerHTML = Object.entries(mockMeetings).map(([id, meeting]) => `
+                <tr class="border-b border-gray-200 hover:bg-gray-50 transition-colors" data-meeting-id="${id}">
+                    <td class="py-3 px-4 text-sm text-gray-800">${meeting.title}</td>
+                    <td class="py-3 px-4 text-sm text-gray-600">${new Date(meeting.datetime).toLocaleString('en-US', { dateStyle: 'short', timeStyle: 'short' })}</td>
+                    <td class="py-3 px-4 text-sm text-gray-600">You + ${meeting.members.length - 1} others</td>
+                    <td class="py-3 px-4"><span class="px-2 py-1 text-xs rounded-full ${meeting.status === 'Joined' ? 'bg-green-50 text-green-500' : meeting.status === 'Ongoing' ? 'bg-green-50 text-green-500' : 'bg-blue-50 text-blue-500'}">${meeting.status}</span></td>
+                    <td class="py-3 px-4">
+                        <button class="view-meeting-btn text-blue-500 hover:text-blue-600">
+                            <i data-feather="eye" class="w-4 h-4"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+            feather.replace();
+        }
+
+        // Open modal
+        function openModal(meetingId) {
+            currentMeetingId = meetingId;
+            const meetingData = mockMeetings[meetingId];
+            if (!meetingData) return;
+            titleInput.value = meetingData.title;
+            dateTimeInput.value = meetingData.datetime;
+            focalPointSelect.value = meetingData.focalPoint;
+            selectedChips.innerHTML = meetingData.members.map(memberId => {
+                const member = mockMembers[memberId];
+                return member ? `
+                    <div class="flex items-center bg-gray-100 rounded px-1.5 sm:px-2 py-0.5 text-2xs sm:text-xs">
+                        <img src="${member.avatar}" alt="${member.name}" class="w-4 h-4 sm:w-5 sm:h-5 rounded-full mr-1">
+                        <span>${member.name}</span>
+                    </div>
+                ` : '';
+            }).join('');
+            notesTextarea.value = meetingData.notes || '';
+            document.getElementById('modalTitle').textContent = `View: ${meetingData.title}`;
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('show'), 10);
+        }
+
+        // Close modal
+        function closeModal() {
+            modal.classList.remove('show');
+            setTimeout(() => {
+                modal.style.display = 'none';
+                currentMeetingId = null;
+            }, 300);
+        }
+
+        // Join meeting
+        document.getElementById('joinMeetingBtn').addEventListener('click', () => {
+            if (currentMeetingId) {
+                mockMeetings[currentMeetingId].status = 'Joined';
+                Toastify({ text: 'Joined meeting successfully!', style: { background: '#10b981' } }).showToast();
+                closeModal();
+                refreshMeetingsSection();
+            }
+        });
+
+        // Delegated events
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.view-meeting-btn')) {
+                const row = e.target.closest('tr');
+                const id = row.dataset.meetingId;
+                openModal(id);
+            }
+            if (e.target.closest('#closeModal') || e.target.closest('#cancelModal')) {
+                closeModal();
+            }
+        });
+
+        // Escape key to close modal
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.style.display === 'flex') closeModal();
+        });
+    </script>
+</body>
+</html>

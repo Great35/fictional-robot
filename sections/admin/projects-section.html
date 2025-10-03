@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects Section</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="bg-gray-50">
+    <div id="projectsSection" class="section p-4">
+        <div id="projectsList" class="bg-white rounded-xl shadow-md p-6 animate-card">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-bold text-gray-800">Projects</h2>
+                <button id="openNewProjectModal" class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg smooth-transition flex items-center">
+                    <i data-feather="plus" class="mr-2"></i> Add New Project
+                </button>
+            </div>
+            <p class="text-gray-600 mb-6">Track project progress, assign tasks, and monitor deadlines.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="projectsListBody">
+                <div class="p-4 bg-gray-50 rounded-lg" data-project-id="1">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-medium text-gray-800 mb-2">Website Redesign</h3>
+                        <div>
+                            <button class="edit-project-btn text-blue-500 hover:text-blue-600 mr-2">
+                                <i data-feather="edit" class="w-4 h-4"></i>
+                            </button>
+                            <button class="delete-project-btn text-red-500 hover:text-red-600">
+                                <i data-feather="trash-2" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-2">Deadline: 2025-12-01</p>
+                    <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+                        <div class="bg-blue-500 h-2 rounded-full" style="width: 75%"></div>
+                    </div>
+                    <p class="text-xs text-gray-500">75% Complete • Assigned to Team A</p>
+                </div>
+                <div class="p-4 bg-gray-50 rounded-lg" data-project-id="2">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-medium text-gray-800 mb-2">Mobile App Launch</h3>
+                        <div>
+                            <button class="edit-project-btn text-blue-500 hover:text-blue-600 mr-2">
+                                <i data-feather="edit" class="w-4 h-4"></i>
+                            </button>
+                            <button class="delete-project-btn text-red-500 hover:text-red-600">
+                                <i data-feather="trash-2" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-2">Deadline: 2025-11-15</p>
+                    <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+                        <div class="bg-green-500 h-2 rounded-full" style="width: 90%"></div>
+                    </div>
+                    <p class="text-xs text-gray-500">90% Complete • Assigned to Team B</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- New/Edit Project Modal -->
+        <div id="projectModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center transition-opacity duration-300 z-[999998]" style="display: none;">
+            <div class="bg-white rounded-lg shadow-lg w-full max-w-[358px] sm:max-w-[410px] md:max-w-[461px] p-2 sm:p-3 transform transition-all duration-300 z-[999999]">
+                <div class="flex items-center justify-between mb-1 sm:mb-2">
+                    <h2 class="text-2xs sm:text-base font-bold text-gray-800" id="modalTitle">Add Project</h2>
+                    <button class="text-gray-500 hover:text-gray-700 text-lg sm:text-xl font-semibold" id="closeModal">&times;</button>
+                </div>
+                <div class="mb-1 sm:mb-2">
+                    <form id="projectForm">
+                        <div class="mb-1 sm:mb-2">
+                            <label class="block text-2xs sm:text-xs font-medium text-gray-700 mb-0.5 sm:mb-1" for="projectName">Project Name</label>
+                            <input type="text" id="projectName" class="w-full border border-gray-300 rounded-lg px-1.5 sm:px-2 py-0.5 sm:py-1 text-2xs sm:text-xs focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter project name" required>
+                        </div>
+                        <div class="mb-1 sm:mb-2">
+                            <label class="block text-2xs sm:text-xs font-medium text-gray-700 mb-0.5 sm:mb-1" for="projectDeadline">Deadline</label>
+                            <input type="date" id="projectDeadline" class="w-24 sm:w-32 border border-gray-300 rounded-lg px-1.5 sm:px-2 py-0.5 sm:py-1 text-2xs sm:text-xs focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        </div>
+                        <div class="mb-1 sm:mb-2">
+                            <label class="block text-2xs sm:text-xs font-medium text-gray-700 mb-0.5 sm:mb-1" for="projectProgress">Progress (%)</label>
+                            <input type="number" id="projectProgress" class="w-24 sm:w-32 border border-gray-300 rounded-lg px-1.5 sm:px-2 py-0.5 sm:py-1 text-2xs sm:text-xs focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="0-100" min="0" max="100" required>
+                        </div>
+                        <div class="mb-1 sm:mb-2">
+                            <label class="block text-2xs sm:text-xs font-medium text-gray-700 mb-0.5 sm:mb-1" for="assignedTeam">Assigned Team</label>
+                            <select id="assignedTeam" class="w-full border border-gray-300 rounded-lg px-1.5 sm:px-2 py-0.5 sm:py-1 text-2xs sm:text-xs focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                <option value="">Select team</option>
+                                <option value="team-a">Team A</option>
+                                <option value="team-b">Team B</option>
+                                <option value="team-c">Team C</option>
+                                <option value="team-d">Team D</option>
+                            </select>
+                        </div>
+                        <div class="mb-1 sm:mb-2">
+                            <label class="block text-2xs sm:text-xs font-medium text-gray-700 mb-0.5 sm:mb-1" for="projectNotes">Notes (Optional)</label>
+                            <textarea id="projectNotes" class="w-full border border-gray-300 rounded-lg px-1.5 sm:px-2 py-0.5 sm:py-1 text-2xs sm:text-xs focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter additional notes..."></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="flex justify-end space-x-1 sm:space-x-2">
+                    <button type="button" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-0.5 sm:py-1 px-2 sm:px-3 rounded-lg transition-colors duration-200 text-2xs sm:text-xs" id="cancelModal">Cancel</button>
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-0.5 sm:py-1 px-2 sm:px-3 rounded-lg transition-colors duration-200 text-2xs sm:text-xs" form="projectForm" id="saveModal">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Feather icons
+        feather.replace();
+
+        // Modal and form elements
+        const modal = document.getElementById('projectModal');
+        const form = document.getElementById('projectForm');
+        const nameInput = document.getElementById('projectName');
+        const deadlineInput = document.getElementById('projectDeadline');
+        const progressInput = document.getElementById('projectProgress');
+        const teamSelect = document.getElementById('assignedTeam');
+        const notesTextarea = document.getElementById('projectNotes');
+        let isEditMode = false;
+        let currentProjectId = null;
+
+        // Mock project data
+        const mockProjects = {
+            1: { name: 'Website Redesign', deadline: '2025-12-01', progress: 75, team: 'team-a', notes: '' },
+            2: { name: 'Mobile App Launch', deadline: '2025-11-15', progress: 90, team: 'team-b', notes: 'Prepare for stakeholder demo.' }
+        };
+        let nextProjectId = 3;
+
+        // Mock teams data
+        const mockTeams = {
+            'team-a': { name: 'Team A' },
+            'team-b': { name: 'Team B' },
+            'team-c': { name: 'Team C' },
+            'team-d': { name: 'Team D' }
+        };
+
+        // Refresh projects grid
+        function refreshProjectsGrid() {
+            const listBody = document.getElementById('projectsListBody');
+            listBody.innerHTML = Object.entries(mockProjects).map(([id, p]) => `
+                <div class="p-4 bg-gray-50 rounded-lg" data-project-id="${id}">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-medium text-gray-800 mb-2">${p.name}</h3>
+                        <div>
+                            <button class="edit-project-btn text-blue-500 hover:text-blue-600 mr-2">
+                                <i data-feather="edit" class="w-4 h-4"></i>
+                            </button>
+                            <button class="delete-project-btn text-red-500 hover:text-red-600">
+                                <i data-feather="trash-2" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-2">Deadline: ${p.deadline}</p>
+                    <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+                        <div class="bg-${p.progress >= 80 ? 'green' : 'blue'}-500 h-2 rounded-full" style="width: ${p.progress}%"></div>
+                    </div>
+                    <p class="text-xs text-gray-500">${p.progress}% Complete • Assigned to ${mockTeams[p.team]?.name || 'Unassigned'}</p>
+                </div>`).join('');
+            feather.replace();
+        }
+
+        // Open modal
+        function openModal(editData = null) {
+            isEditMode = !!editData;
+            currentProjectId = editData ? editData.id : null;
+            document.getElementById('modalTitle').textContent = isEditMode ? 'Edit Project' : 'Add Project';
+            form.reset();
+            if (isEditMode) {
+                nameInput.value = editData.name;
+                deadlineInput.value = editData.deadline;
+                progressInput.value = editData.progress;
+                teamSelect.value = editData.team;
+                notesTextarea.value = editData.notes || '';
+            }
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('show'), 10);
+        }
+
+        // Close modal
+        function closeModal() {
+            modal.classList.remove('show');
+            setTimeout(() => modal.style.display = 'none', 300);
+            isEditMode = false;
+            currentProjectId = null;
+        }
+
+        // Submit form
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = {
+                name: nameInput.value,
+                deadline: deadlineInput.value,
+                progress: parseInt(progressInput.value),
+                team: teamSelect.value,
+                notes: notesTextarea.value
+            };
+            if (!formData.name || !formData.deadline || !formData.team || isNaN(formData.progress)) {
+                Toastify({ text: 'Please fill all required fields', style: { background: '#ef4444' } }).showToast();
+                return;
+            }
+            if (formData.progress < 0 || formData.progress > 100) {
+                Toastify({ text: 'Progress must be between 0 and 100', style: { background: '#ef4444' } }).showToast();
+                return;
+            }
+            if (isEditMode) {
+                mockProjects[currentProjectId] = formData;
+            } else {
+                mockProjects[nextProjectId] = formData;
+                nextProjectId++;
+            }
+            Toastify({ text: isEditMode ? 'Project updated!' : 'Project added!', style: { background: '#10b981' } }).showToast();
+            closeModal();
+            refreshProjectsGrid();
+        });
+
+        // Delegated events
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('#openNewProjectModal')) {
+                openModal();
+            }
+            if (e.target.closest('.edit-project-btn')) {
+                const card = e.target.closest('[data-project-id]');
+                const id = card.dataset.projectId;
+                const p = mockProjects[id];
+                if (p) {
+                    p.id = id;
+                    openModal(p);
+                }
+            }
+            if (e.target.closest('.delete-project-btn')) {
+                const card = e.target.closest('[data-project-id]');
+                if (confirm('Delete this project?')) {
+                    delete mockProjects[card.dataset.projectId];
+                    Toastify({ text: 'Project deleted', style: { background: '#10b981' } }).showToast();
+                    refreshProjectsGrid();
+                }
+            }
+            if (e.target.closest('#closeModal') || e.target.closest('#cancelModal')) {
+                closeModal();
+            }
+        });
+
+        // Escape key to close modal
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.style.display === 'flex') closeModal();
+        });
+    </script>
+</body>
+</html>

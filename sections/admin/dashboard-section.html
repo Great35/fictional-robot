@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Section</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="bg-gray-50">
+    <div id="dashboardSection" class="section p-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+            <div class="animate-card bg-white rounded-xl shadow-md p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Upcoming Meetings</p>
+                        <h3 class="text-2xl font-bold text-gray-800 mt-1">5</h3>
+                    </div>
+                    <div class="p-3 bg-blue-50 rounded-lg">
+                        <i data-feather="calendar" class="text-blue-500"></i>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <a href="#" class="text-blue-500 text-sm font-medium flex items-center">
+                        View all
+                        <i data-feather="chevron-right" class="ml-1 w-4 h-4"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="animate-card bg-white rounded-xl shadow-md p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Active Projects</p>
+                        <h3 class="text-2xl font-bold text-gray-800 mt-1">12</h3>
+                    </div>
+                    <div class="p-3 bg-green-50 rounded-lg">
+                        <i data-feather="clipboard" class="text-green-500"></i>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <a href="#" class="text-blue-500 text-sm font-medium flex items-center">
+                        View all
+                        <i data-feather="chevron-right" class="ml-1 w-4 h-4"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="animate-card bg-white rounded-xl shadow-md p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Pending Tasks</p>
+                        <h3 class="text-2xl font-bold text-gray-800 mt-1">23</h3>
+                    </div>
+                    <div class="p-3 bg-yellow-50 rounded-lg">
+                        <i data-feather="check-circle" class="text-yellow-500"></i>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <a href="#" class="text-blue-500 text-sm font-medium flex items-center">
+                        View all
+                        <i data-feather="chevron-right" class="ml-1 w-4 h-4"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="animate-card bg-white rounded-xl shadow-md p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Audits Due</p>
+                        <h3 class="text-2xl font-bold text-gray-800 mt-1">7</h3>
+                    </div>
+                    <div class="p-3 bg-purple-50 rounded-lg">
+                        <i data-feather="file-text" class="text-purple-500"></i>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <a href="#" class="text-blue-500 text-sm font-medium flex items-center">
+                        View all
+                        <i data-feather="chevron-right" class="ml-1 w-4 h-4"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="bg-white rounded-xl shadow-md p-6 mb-6 animate-card">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-bold text-gray-800">Upcoming Meetings</h2>
+                <a href="#" class="text-blue-500 text-sm font-medium flex items-center">
+                    View all
+                    <i data-feather="chevron-right" class="ml-1 w-4 h-4"></i>
+                </a>
+            </div>
+            <div class="space-y-4">
+                <div class="flex items-start p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                    <div class="flex-shrink-0 p-2 bg-blue-50 rounded-lg mr-4">
+                        <i data-feather="calendar" class="text-blue-500"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-medium text-gray-800">Quarterly Strategy Review</h3>
+                        <p class="text-sm text-gray-500">Tomorrow • 10:00 AM - 11:30 AM</p>
+                        <div class="flex items-center mt-2">
+                            <div class="flex -space-x-2 mr-3">
+                                <img class="w-6 h-6 rounded-full border-2 border-white" src="http://static.photos/people/200x200/1" alt="">
+                                <img class="w-6 h-6 rounded-full border-2 border-white" src="http://static.photos/people/200x200/2" alt="">
+                                <img class="w-6 h-6 rounded-full border-2 border-white" src="http://static.photos/people/200x200/3" alt="">
+                            </div>
+                            <span class="text-xs text-gray-500">+3 more</span>
+                        </div>
+                    </div>
+                    <button class="ml-4 px-3 py-1 bg-blue-50 text-blue-500 text-xs font-medium rounded-full">
+                        Join
+                    </button>
+                </div>
+                <div class="flex items-start p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                    <div class="flex-shrink-0 p-2 bg-blue-50 rounded-lg mr-4">
+                        <i data-feather="calendar" class="text-blue-500"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-medium text-gray-800">Marketing Team Sync</h3>
+                        <p class="text-sm text-gray-500">Wed, Jun 15 • 2:00 PM - 3:00 PM</p>
+                        <div class="flex items-center mt-2">
+                            <div class="flex -space-x-2 mr-3">
+                                <img class="w-6 h-6 rounded-full border-2 border-white" src="http://static.photos/people/200x200/4" alt="">
+                                <img class="w-6 h-6 rounded-full border-2 border-white" src="http://static.photos/people/200x200/5" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <button class="ml-4 px-3 py-1 bg-gray-100 text-gray-500 text-xs font-medium rounded-full">
+                        Scheduled
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <div class="bg-white rounded-xl shadow-md p-6 animate-card">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-bold text-gray-800">Tasks Overview</h2>
+                    <a href="#" class="text-blue-500 text-sm font-medium flex items-center">
+                        View all
+                        <i data-feather="chevron-right" class="ml-1 w-4 h-4"></i>
+                    </a>
+                </div>
+                <div class="flex items-center justify-between mb-3">
+                    <div>
+                        <span class="text-sm font-medium text-gray-500">Completed</span>
+                        <h3 class="text-2xl font-bold text-gray-800">14</h3>
+                    </div>
+                    <div class="w-24 h-24">
+                        <svg viewBox="0 0 36 36" class="circular-chart">
+                            <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            <path class="circle" stroke-dasharray="65, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            <text x="18" y="20.35" class="percentage">65%</text>
+                        </svg>
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm font-medium text-gray-500">Pending</span>
+                        <span class="text-sm font-medium text-gray-800">23</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm font-medium text-gray-500">In Progress</span>
+                        <span class="text-sm font-medium text-gray-800">12</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm font-medium text-gray-500">Overdue</span>
+                        <span class="text-sm font-medium text-red-500">5</span>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-xl shadow-md p-6 animate-card">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-bold text-gray-800">Projects Summary</h2>
+                    <a href="#" class="text-blue-500 text-sm font-medium flex items-center">
+                        View all
+                        <i data-feather="chevron-right" class="ml-1 w-4 h-4"></i>
+                    </a>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-sm font-medium text-gray-800">Website Redesign</span>
+                            <span class="text-xs font-medium text-blue-500">75%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-blue-500 h-2 rounded-full" style="width: 75%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-sm font-medium text-gray-800">Mobile App Launch</span>
+                            <span class="text-xs font-medium text-green-500">90%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-green-500 h-2 rounded-full" style="width: 90%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-sm font-medium text-gray-800">Marketing Campaign</span>
+                            <span class="text-xs font-medium text-yellow-500">45%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-yellow-500 h-2 rounded-full" style="width: 45%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bg-white rounded-xl shadow-md p-6 animate-card">
+            <h2 class="text-lg font-bold text-gray-800 mb-4">Quick Actions</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <button class="flex flex-col items-center justify-center p-4 border border-gray-200 rounded-xl hover:bg-blue-50 hover:border-blue-200 transition-colors">
+                    <i data-feather="plus" class="text-blue-500 mb-2"></i>
+                    <span class="text-sm font-medium text-gray-700">New Meeting</span>
+                </button>
+                <button class="flex flex-col items-center justify-center p-4 border border-gray-200 rounded-xl hover:bg-blue-50 hover:border-blue-200 transition-colors">
+                    <i data-feather="file-text" class="text-blue-500 mb-2"></i>
+                    <span class="text-sm font-medium text-gray-700">Create Project</span>
+                </button>
+                <button class="flex flex-col items-center justify-center p-4 border border-gray-200 rounded-xl hover:bg-blue-50 hover:border-blue-200 transition-colors">
+                    <i data-feather="check-circle" class="text-blue-500 mb-2"></i>
+                    <span class="text-sm font-medium text-gray-700">Add Task</span>
+                </button>
+                <button class="flex flex-col items-center justify-center p-4 border border-gray-200 rounded-xl hover:bg-blue-50 hover:border-blue-200 transition-colors">
+                    <i data-feather="user-plus" class="text-blue-500 mb-2"></i>
+                    <span class="text-sm font-medium text-gray-700">Invite Member</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Initialize Feather icons
+        feather.replace();
+    </script>
+</body>
+</html>

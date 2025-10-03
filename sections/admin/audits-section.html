@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audits Section</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="bg-gray-50">
+    <div id="auditsSection" class="section p-4">
+        <!-- Audits content to be refreshed -->
+        <div id="auditsList" class="bg-white rounded-xl shadow-md p-6 animate-card">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-bold text-gray-800">Audits</h2>
+                <button id="openNewAuditModal" class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg smooth-transition flex items-center">
+                    <i data-feather="plus" class="mr-2"></i> Schedule Audit
+                </button>
+            </div>
+            <p class="text-gray-600 mb-6">Review and manage audit schedules and reports.</p>
+            <div class="space-y-4" id="auditsListBody">
+                <div class="p-4 bg-gray-50 rounded-lg" data-audit-id="1">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-medium text-gray-800 mb-2">Financial Audit Q4</h3>
+                        <div>
+                            <button class="edit-audit-btn text-blue-500 hover:text-blue-600 mr-2">
+                                <i data-feather="edit" class="w-4 h-4"></i>
+                            </button>
+                            <button class="delete-audit-btn text-red-500 hover:text-red-600">
+                                <i data-feather="trash-2" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-1">Date: 2025-12-15</p>
+                    <p class="text-sm text-gray-600 mb-1">Status: Pending</p>
+                    <p class="text-sm text-gray-600">Assigned to: Finance Team</p>
+                </div>
+                <div class="p-4 bg-gray-50 rounded-lg" data-audit-id="2">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-medium text-gray-800 mb-2">Compliance Audit</h3>
+                        <div>
+                            <button class="edit-audit-btn text-blue-500 hover:text-blue-600 mr-2">
+                                <i data-feather="edit" class="w-4 h-4"></i>
+                            </button>
+                            <button class="delete-audit-btn text-red-500 hover:text-red-600">
+                                <i data-feather="trash-2" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-1">Date: 2025-11-01</p>
+                    <p class="text-sm text-gray-600 mb-1">Status: Completed</p>
+                    <p class="text-sm text-gray-600">Assigned to: Legal Team</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- New/Edit Audit Modal -->
+        <div id="auditModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center transition-opacity duration-300 z-[999998]" style="display: none;">
+            <div class="bg-white rounded-lg shadow-lg w-full max-w-[358px] sm:max-w-[410px] md:max-w-[461px] p-2 sm:p-3 transform transition-all duration-300 z-[999999]">
+                <div class="flex items-center justify-between mb-1 sm:mb-2">
+                    <h2 class="text-2xs sm:text-base font-bold text-gray-800" id="modalTitle">Schedule Audit</h2>
+                    <button class="text-gray-500 hover:text-gray-700 text-lg sm:text-xl font-semibold" id="closeModal">&times;</button>
+                </div>
+                <div class="mb-1 sm:mb-2">
+                    <form id="auditForm">
+                        <div class="mb-1 sm:mb-2">
+                            <label class="block text-2xs sm:text-xs font-medium text-gray-700 mb-0.5 sm:mb-1" for="auditTitle">Audit Title</label>
+                            <input type="text" id="auditTitle" class="w-full border border-gray-300 rounded-lg px-1.5 sm:px-2 py-0.5 sm:py-1 text-2xs sm:text-xs focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter audit title" required>
+                        </div>
+                        <div class="mb-1 sm:mb-2">
+                            <label class="block text-2xs sm:text-xs font-medium text-gray-700 mb-0.5 sm:mb-1" for="auditDate">Date</label>
+                            <input type="date" id="auditDate" class="w-24 sm:w-32 border border-gray-300 rounded-lg px-1.5 sm:px-2 py-0.5 sm:py-1 text-2xs sm:text-xs focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        </div>
+                        <div class="mb-1 sm:mb-2">
+                            <label class="block text-2xs sm:text-xs font-medium text-gray-700 mb-0.5 sm:mb-1" for="auditStatus">Status</label>
+                            <select id="auditStatus" class="w-full border border-gray-300 rounded-lg px-1.5 sm:px-2 py-0.5 sm:py-1 text-2xs sm:text-xs focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                <option value="Pending">Pending</option>
+                                <option value="In Progress">In Progress</option>
+                                <option value="Completed">Completed</option>
+                            </select>
+                        </div>
+                        <div class="mb-1 sm:mb-2">
+                            <label class="block text-2xs sm:text-xs font-medium text-gray-700 mb-0.5 sm:mb-1" for="assignedTo">Assigned To</label>
+                            <select id="assignedTo" class="w-full border border-gray-300 rounded-lg px-1.5 sm:px-2 py-0.5 sm:py-1 text-2xs sm:text-xs focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                <option value="">Select team or member</option>
+                                <option value="finance-team">Finance Team</option>
+                                <option value="legal-team">Legal Team</option>
+                                <option value="john-doe">John Doe</option>
+                                <option value="jane-smith">Jane Smith</option>
+                                <option value="bob-lee">Bob Lee</option>
+                            </select>
+                        </div>
+                        <div class="mb-1 sm:mb-2">
+                            <label class="block text-2xs sm:text-xs font-medium text-gray-700 mb-0.5 sm:mb-1" for="auditNotes">Notes (Optional)</label>
+                            <textarea id="auditNotes" class="w-full border border-gray-300 rounded-lg px-1.5 sm:px-2 py-0.5 sm:py-1 text-2xs sm:text-xs focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter additional notes..."></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="flex justify-end space-x-1 sm:space-x-2">
+                    <button type="button" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-0.5 sm:py-1 px-2 sm:px-3 rounded-lg transition-colors duration-200 text-2xs sm:text-xs" id="cancelModal">Cancel</button>
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-0.5 sm:py-1 px-2 sm:px-3 rounded-lg transition-colors duration-200 text-2xs sm:text-xs" form="auditForm" id="saveModal">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Feather icons
+        feather.replace();
+
+        // Modal and form elements
+        const modal = document.getElementById('auditModal');
+        const form = document.getElementById('auditForm');
+        const titleInput = document.getElementById('auditTitle');
+        const dateInput = document.getElementById('auditDate');
+        const statusSelect = document.getElementById('auditStatus');
+        const assignedToSelect = document.getElementById('assignedTo');
+        const notesTextarea = document.getElementById('auditNotes');
+        let isEditMode = false;
+        let currentAuditId = null;
+
+        // Mock audit data
+        const mockAudits = {
+            1: { title: 'Financial Audit Q4', date: '2025-12-15', status: 'Pending', assignedTo: 'finance-team', notes: '' },
+            2: { title: 'Compliance Audit', date: '2025-11-01', status: 'Completed', assignedTo: 'legal-team', notes: 'Regulatory compliance check.' }
+        };
+        let nextAuditId = 3;
+
+        // Mock assignees data (teams and members)
+        const mockAssignees = {
+            'finance-team': { name: 'Finance Team' },
+            'legal-team': { name: 'Legal Team' },
+            'john-doe': { name: 'John Doe' },
+            'jane-smith': { name: 'Jane Smith' },
+            'bob-lee': { name: 'Bob Lee' }
+        };
+
+        // Refresh audits list
+        function refreshAuditsList() {
+            const listBody = document.getElementById('auditsListBody');
+            listBody.innerHTML = Object.entries(mockAudits).map(([id, a]) => `
+                <div class="p-4 bg-gray-50 rounded-lg" data-audit-id="${id}">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-medium text-gray-800 mb-2">${a.title}</h3>
+                        <div>
+                            <button class="edit-audit-btn text-blue-500 hover:text-blue-600 mr-2">
+                                <i data-feather="edit" class="w-4 h-4"></i>
+                            </button>
+                            <button class="delete-audit-btn text-red-500 hover:text-red-600">
+                                <i data-feather="trash-2" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-1">Date: ${a.date}</p>
+                    <p class="text-sm text-gray-600 mb-1">Status: ${a.status}</p>
+                    <p class="text-sm text-gray-600">Assigned to: ${mockAssignees[a.assignedTo]?.name || 'Unknown'}</p>
+                </div>`).join('');
+            feather.replace();
+        }
+
+        // Open modal
+        function openModal(editData = null) {
+            isEditMode = !!editData;
+            currentAuditId = editData ? editData.id : null;
+            document.getElementById('modalTitle').textContent = isEditMode ? 'Edit Audit' : 'Schedule Audit';
+            form.reset();
+            if (isEditMode) {
+                titleInput.value = editData.title;
+                dateInput.value = editData.date;
+                statusSelect.value = editData.status;
+                assignedToSelect.value = editData.assignedTo;
+                notesTextarea.value = editData.notes || '';
+            }
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('show'), 10);
+        }
+
+        // Close modal
+        function closeModal() {
+            modal.classList.remove('show');
+            setTimeout(() => modal.style.display = 'none', 300);
+            isEditMode = false;
+            currentAuditId = null;
+        }
+
+        // Submit form
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = {
+                title: titleInput.value,
+                date: dateInput.value,
+                status: statusSelect.value,
+                assignedTo: assignedToSelect.value,
+                notes: notesTextarea.value
+            };
+            if (!formData.title || !formData.date || !formData.status || !formData.assignedTo) {
+                Toastify({ text: 'Please fill all required fields', style: { background: '#ef4444' } }).showToast();
+                return;
+            }
+            if (isEditMode) {
+                mockAudits[currentAuditId] = formData;
+            } else {
+                mockAudits[nextAuditId] = formData;
+                nextAuditId++;
+            }
+            Toastify({ text: isEditMode ? 'Audit updated!' : 'Audit scheduled!', style: { background: '#10b981' } }).showToast();
+            closeModal();
+            refreshAuditsList();
+        });
+
+        // Delegated events
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('#openNewAuditModal')) {
+                openModal();
+            }
+            if (e.target.closest('.edit-audit-btn')) {
+                const card = e.target.closest('[data-audit-id]');
+                const id = card.dataset.auditId;
+                const a = mockAudits[id];
+                if (a) {
+                    a.id = id;
+                    openModal(a);
+                }
+            }
+            if (e.target.closest('.delete-audit-btn')) {
+                const card = e.target.closest('[data-audit-id]');
+                if (confirm('Delete this audit?')) {
+                    delete mockAudits[card.dataset.auditId];
+                    Toastify({ text: 'Audit deleted', style: { background: '#10b981' } }).showToast();
+                    refreshAuditsList();
+                }
+            }
+            if (e.target.closest('#closeModal') || e.target.closest('#cancelModal')) {
+                closeModal();
+            }
+        });
+
+        // Escape key to close modal
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.style.display === 'flex') closeModal();
+        });
+    </script>
+</body>
+</html>

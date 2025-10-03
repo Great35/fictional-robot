@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meetings Section</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="bg-gray-50">
+    <div id="meetingsSection" class="section">
+        <!-- Table content -->
+        <div id="meetingsTable" class="bg-white rounded-xl shadow-md p-6 animate-card">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-bold text-gray-800">Meetings</h2>
+                <button id="openNewMeetingModal" class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg smooth-transition flex items-center">
+                    <i data-feather="plus" class="mr-2"></i> Schedule New Meeting
+                </button>
+            </div>
+            <p class="text-gray-600 mb-6">Manage meetings, view schedules, and join calls.</p>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-gray-200">
+                            <th class="py-3 px-4 text-sm font-medium text-gray-500">Title</th>
+                            <th class="py-3 px-4 text-sm font-medium text-gray-500">Date & Time</th>
+                            <th class="py-3 px-4 text-sm font-medium text-gray-500">Participants</th>
+                            <th class="py-3 px-4 text-sm font-medium text-gray-500">Status</th>
+                            <th class="py-3 px-4 text-sm font-medium text-gray-500">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-gray-200 hover:bg-gray-50 transition-colors" data-meeting-id="1">
+                            <td class="py-3 px-4 text-sm text-gray-800">Quarterly Review</td>
+                            <td class="py-3 px-4 text-sm text-gray-600">2025-10-03 • 10:00 AM</td>
+                            <td class="py-3 px-4 text-sm text-gray-600">Team A (5 members)</td>
+                            <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-50 text-blue-500 text-xs rounded-full">Scheduled</span></td>
+                            <td class="py-3 px-4">
+                                <button class="edit-meeting-btn text-blue-500 hover:text-blue-600 mr-2">
+                                    <i data-feather="edit" class="w-4 h-4"></i>
+                                </button>
+                                <button class="delete-meeting-btn text-red-500 hover:text-red-600">
+                                    <i data-feather="trash-2" class="w-4 h-4"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-50 transition-colors" data-meeting-id="2">
+                            <td class="py-3 px-4 text-sm text-gray-800">Marketing Sync</td>
+                            <td class="py-3 px-4 text-sm text-gray-600">2025-10-05 • 2:00 PM (Recurring)</td>
+                            <td class="py-3 px-4 text-sm text-gray-600">Team B (3 members)</td>
+                            <td class="py-3 px-4"><span class="px-2 py-1 bg-green-50 text-green-500 text-xs rounded-full">Ongoing</span></td>
+                            <td class="py-3 px-4">
+                                <button class="edit-meeting-btn text-blue-500 hover:text-blue-600 mr-2">
+                                    <i data-feather="edit" class="w-4 h-4"></i>
+                                </button>
+                                <button class="delete-meeting-btn text-red-500 hover:text-red-600">
+                                    <i data-feather="trash-2" class="w-4 h-4"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Admin New/Edit Meeting Modal -->
+        <div id="meetingModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center transition-opacity duration-300 z-[999998]" style="display: none;">
+            <div class="bg-white rounded-lg shadow-lg w-full max-w-[358px] sm:max-w-[410px] md:max-w-[461px] p-2 sm:p-3 transform transition-all duration-300 z-[999999]">
+                <div class="flex items-center justify-between mb-1 sm:mb-2">
+                    <h2 class="text-2xs sm:text-base font-bold text-gray-800" id="modalTitle">New Meeting</h2>
+                    <button class="text-gray-500 hover:text-gray-700 text-lg sm:text-xl font-semibold" id="closeModal">&times;</button>
+                </div>
+                <div class="mb-1 sm:mb-2">
+                    <form id="meetingForm">
+                        <!-- Basic Appointment Details -->
+                        <div class="mb-1 sm:mb-2">
+                            <label class="block text-2xs sm:text-xs font-medium text-gray-700 mb-0.5 sm:mb-1" for="meetingTitle">Meeting Title</label>
+                            <input type="text" id="meetingTitle" class="w-full border border-gray-300 rounded-lg px-1.5 sm:px-2 py-0.5 sm:py-1 text-2xs sm:text-xs focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter meeting title" required>
+                        </div>
+                        <div class="mb-1 sm:mb-2 flex flex-col sm:flex-row sm:space-x-3 space-y-1 sm:space-y-0">
+                            <div class="flex-1">
+                                <label class="block text-2xs sm:text-xs font-medium text-gray-700 mb-0.5 sm:mb-1" for="startDateTime">Start Time</label>
+                                <input type="datetime-local" id="startDateTime" class="w-full border border-gray-300 rounded-lg px-1.5 sm:px-2 py-0.5 sm:py-1 text-2xs sm:text-xs focus:outline-none focus:ring-2 focus:ring-blue-500" value="2025-09-30T12:30" required>
+                            </div>
+                            <div class="flex-1">
+                                <label class="block text-2xs sm:text-xs font-medium text-gray-700 mb-0.5 sm:mb-1" for="endDateTime">End Time</label>
+                                <input type="datetime-local" id="endDateTime" class="w-full border border-gray-300 rounded-lg px-1.5 sm:px-2 py-0.5 sm:py-1 text-2xs sm:text-xs focus:outline-none focus:ring-2 focus:ring-blue-500" value="2025-09-30T13:00" required>
+                            </div>
+                        </div>
+                        <div class="mb-1 sm:mb-2 flex flex-col sm:flex-row sm:space-x-3 space-y-1 sm:space-y-0">
+                            <div class="flex-1">
+                                <label class="block text-2xs sm:text-xs font-medium text-gray-700 mb-0.5 sm:mb-1" for="timeZone">Time Zone</label>
+                                <select id="timeZone" class="w-full border border-gray-300 rounded-lg px-1.5 sm:px-2 py-0.5 sm:py-1 text-2xs sm:text-xs focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option value="UTC">UTC</option>
+                                    <option value="Africa/Lagos" selected>West Africa Time (WAT)</option>
+                                    <option value="America/Los_Angeles">Pacific Time (PST)</option>
+                                    <option value="America/New_York">Eastern Time (EST)</option>
+                                </select>
+                            </div>
+                            <div class="flex-1 flex items-center">
+                                <input type="checkbox" id="allDay" class="w-2.5 sm:w-3 h-2.5 sm:h-3 text-blue-500 border-gray-300 rounded focus:ring-blue-500 mr-0.5 sm:mr-1">
+                                <label class="text-2xs sm:text-xs font-medium text-gray-700" for="allDay">All Day</label>
+                            </div>
+                        </div>
+                        <!-- Recurrence Window -->
+                        <div id="recurrenceWindow" class="border border-gray-300 rounded-lg p-1.5 sm:p-2">
+                            <div class="mb-1 sm:mb-2">
+                                <h3 class="text-2xs sm:text-xs font-bold text-gray-800 mb-0.5 sm:mb-1">Appointment Time</h3>
+                                <p class="text-2xs sm:text-xs text-gray-600">Start: <span id="recurrenceStart">12:30 PM</span></p>
+                                <p class="text-2xs sm:text-xs text-gray-600">End: <span id="recurrenceEnd">1:00 PM</span></p>
+                                <p class="text-2xs sm:text-xs text-gray-600">Duration: <span id="recurrenceDuration">30 minutes</span></p>
+                            </div>
+                            <div class="mb-1 sm:mb-2">
+                                <h3 class="text-2xs sm:text-xs font-bold text-gray-800 mb-0.5 sm:mb-1">Recurrence Pattern</h3>
+                                <div class="flex flex-wrap gap-1.5 sm:gap-3">
+                                    <label class="flex items-center text-2xs sm:text-xs text-gray-700">
+                                        <input type="radio" name="recurrencePattern" value="Daily" class="mr-0.5 sm:mr-1 text-blue-500 focus:ring-blue-500">
+                                        Daily
+                                    </label>
+                                    <label class="flex items-center text-2xs sm:text-xs text-gray-700">
+                                        <input type="radio" name="recurrencePattern" value="Weekly" class="mr-0.5 sm:mr-1 text-blue-500 focus:ring-blue-500" checked>
+                                        Weekly
+                                    </label>
+                                    <label class="flex items-center text-2xs sm:text-xs text-gray-700">
+                                        <input type="radio" name="recurrencePattern" value="Monthly" class="mr-0.5 sm:mr-1 text-blue-500 focus:ring-blue-500">
+                                        Monthly
+                                    </label>
+                                    <label class="flex items-center text-2xs sm:text-xs text-gray-700">
+                                        <input type="radio" name="recurrencePattern" value="Yearly" class="mr-0.5 sm:mr-1 text-blue-500 focus:ring-blue-500">
+                                        Yearly
+                                    </label>
+                                </div>
+                                <div class="mt-0.5 sm:mt-1 flex flex-col sm:flex-row sm:items-center space-y-0.5 sm:space-y-0">
+                                    <label class="text-2xs sm:text-xs text-gray-700 mr-0.5 sm:mr-1">Recur every</label>
+                                    <input type="number" id="recurInterval" class="w-10 sm:w-12 border border-gray-300 rounded-lg px-1 sm:px-1.5 py-0.5 text-2xs sm:text-xs focus:outline-none focus:ring-2 focus:ring-blue-500" value="1" min="1">
+                                    <span class="text-2xs sm:text-xs text-gray-700 ml-0.5 sm:ml-1">week(s) on:</span>
+                                    <label class="flex items-center text-2xs sm:text-xs text-gray-700 ml-0.5 sm:ml-1">
+                                        <input type="checkbox" id="recurTuesday" class="w-2.5 sm:w-3 h-2.5 sm:h-3 text-blue-500 border-gray-300 rounded focus:ring-blue-500 mr-0.5" checked>
+                                        Tuesday
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="mb-1 sm:mb-2">
+                                <h3 class="text-2xs sm:text-xs font-bold text-gray-800 mb-0.5 sm:mb-1">Range of Recurrence</h3>
+                                <div class="flex items-center mb-0.5 sm:mb-1">
+                                    <label class="text-2xs sm:text-xs text-gray-700 mr-0.5 sm:mr-1">Start:</label>
+                                    <input type="date" id="recurrenceStartDate" class="w-28 sm:w-32 border border-gray-300 rounded-lg px-1 sm:px-1.5 py-0.5 text-2xs sm:text-xs focus:outline-none focus:ring-2 focus:ring-blue-500" value="2025-09-30">
+                                </div>
+                                <div class="space-y-0.5 sm:space-y-1">
+                                    <label class="flex items-center text-2xs sm:text-xs text-gray-700">
+                                        <input type="radio" name="recurrenceEnd" value="byDate" class="mr-0.5 sm:mr-1 text-blue-500 focus:ring-blue-500" checked>
+                                        End by: <input type="date" id="recurrenceEndDate" class="ml-0.5 sm:ml-1 w-28 sm:w-32 border border-gray-300 rounded-lg px-1 sm:px-1.5 py-0.5 text-2xs sm:text-xs focus:outline-none focus:ring-2 focus:ring-blue-500" value="2026-03-17">
+                                    </label>
+                                    <label class="flex items-center text-2xs sm:text-xs text-gray-700">
+                                        <input type="radio" name="recurrenceEnd" value="afterOccurrences" class="mr-0.5 sm:mr-1 text-blue-500 focus:ring-blue-500">
+                                        End after: <input type="number" id="recurrenceOccurrences" class="ml-0.5 sm:ml-1 w-10 sm:w-12 border border-gray-300 rounded-lg px-1 sm:px-1.5 py-0.5 text-2xs sm:text-xs focus:outline-none focus:ring-2 focus:ring-blue-500" value="10" min="1">
+                                        occurrences
+                                    </label>
+                                    <label class="flex items-center text-2xs sm:text-xs text-gray-700">
+                                        <input type="radio" name="recurrenceEnd" value="noEnd" class="mr-0.5 sm:mr-1 text-blue-500 focus:ring-blue-500">
+                                        No end date
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="flex justify-end space-x-1 sm:space-x-2">
+                    <button type="button" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-0.5 sm:py-1 px-2 sm:px-3 rounded-lg transition-colors duration-200 text-2xs sm:text-xs" id="cancelModal">Cancel</button>
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-0.5 sm:py-1 px-2 sm:px-3 rounded-lg transition-colors duration-200 text-2xs sm:text-xs" form="meetingForm" id="saveModal">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Feather icons
+        feather.replace();
+
+        // Modal and form elements
+        const modal = document.getElementById('meetingModal');
+        const form = document.getElementById('meetingForm');
+        const titleInput = document.getElementById('meetingTitle');
+        const startDateTime = document.getElementById('startDateTime');
+        const endDateTime = document.getElementById('endDateTime');
+        const allDay = document.getElementById('allDay');
+        const timeZone = document.getElementById('timeZone');
+        const recurrenceStart = document.getElementById('recurrenceStart');
+        const recurrenceEnd = document.getElementById('recurrenceEnd');
+        const recurrenceDuration = document.getElementById('recurrenceDuration');
+        const recurrencePatternInputs = document.getElementsByName('recurrencePattern');
+        const recurInterval = document.getElementById('recurInterval');
+        const recurTuesday = document.getElementById('recurTuesday');
+        const recurrenceStartDate = document.getElementById('recurrenceStartDate');
+        const recurrenceEndInputs = document.getElementsByName('recurrenceEnd');
+        const recurrenceEndDate = document.getElementById('recurrenceEndDate');
+        const recurrenceOccurrences = document.getElementById('recurrenceOccurrences');
+        let isEditMode = false;
+        let currentMeetingId = null;
+
+        // Mock meeting data
+        const mockMeetings = {
+            1: { 
+                title: 'Quarterly Review', 
+                startDateTime: '2025-10-03T10:00', 
+                endDateTime: '2025-10-03T11:00', 
+                timeZone: 'UTC', 
+                allDay: false, 
+                status: 'Scheduled' 
+            },
+            2: { 
+                title: 'Marketing Sync', 
+                startDateTime: '2025-10-05T14:00', 
+                endDateTime: '2025-10-05T15:00', 
+                timeZone: 'UTC', 
+                allDay: false, 
+                status: 'Ongoing',
+                recurrence: {
+                    pattern: 'Weekly',
+                    interval: 1,
+                    days: ['Tuesday'],
+                    startDate: '2025-09-30',
+                    endType: 'byDate',
+                    endDate: '2026-03-17',
+                    occurrences: null
+                }
+            }
+        };
+        let nextMeetingId = 3;
+
+        // Update recurrence time display
+        function updateRecurrenceTime() {
+            const start = new Date(startDateTime.value);
+            const end = new Date(endDateTime.value);
+            recurrenceStart.textContent = start.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+            recurrenceEnd.textContent = end.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+            const duration = (end - start) / (1000 * 60); // Duration in minutes
+            recurrenceDuration.textContent = `${duration} minutes`;
+        }
+
+        // Update time fields
+        startDateTime.addEventListener('input', () => {
+            updateRecurrenceTime();
+            recurrenceStartDate.value = startDateTime.value.split('T')[0];
+        });
+        endDateTime.addEventListener('input', updateRecurrenceTime);
+
+        // Refresh meetings table
+        function refreshMeetingsSection() {
+            const tableSection = document.getElementById('meetingsTable');
+            tableSection.innerHTML = `
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-bold text-gray-800">Meetings</h2>
+                    <button id="openNewMeetingModal" class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg smooth-transition flex items-center">
+                        <i data-feather="plus" class="mr-2"></i> Schedule New Meeting
+                    </button>
+                </div>
+                <p class="text-gray-600 mb-6">Manage meetings, view schedules, and join calls.</p>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-gray-200">
+                                <th class="py-3 px-4 text-sm font-medium text-gray-500">Title</th>
+                                <th class="py-3 px-4 text-sm font-medium text-gray-500">Date & Time</th>
+                                <th class="py-3 px-4 text-sm font-medium text-gray-500">Participants</th>
+                                <th class="py-3 px-4 text-sm font-medium text-gray-500">Status</th>
+                                <th class="py-3 px-4 text-sm font-medium text-gray-500">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${Object.entries(mockMeetings).map(([id, m]) => `
+                                <tr class="border-b border-gray-200 hover:bg-gray-50 transition-colors" data-meeting-id="${id}">
+                                    <td class="py-3 px-4 text-sm text-gray-800">${m.title}</td>
+                                    <td class="py-3 px-4 text-sm text-gray-600">${new Date(m.startDateTime).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' })}${m.recurrence ? ' (Recurring)' : ''}</td>
+                                    <td class="py-3 px-4 text-sm text-gray-600">${m.participants ? m.participants.length : 0} members</td>
+                                    <td class="py-3 px-4"><span class="px-2 py-1 ${m.status === 'Scheduled' ? 'bg-blue-50 text-blue-500' : 'bg-green-50 text-green-500'} text-xs rounded-full">${m.status}</span></td>
+                                    <td class="py-3 px-4">
+                                        <button class="edit-meeting-btn text-blue-500 hover:text-blue-600 mr-2"><i data-feather="edit" class="w-4 h-4"></i></button>
+                                        <button class="delete-meeting-btn text-red-500 hover:text-red-600"><i data-feather="trash-2" class="w-4 h-4"></i></button>
+                                    </td>
+                                </tr>`).join('')}
+                        </tbody>
+                    </table>
+                </div>`;
+            document.getElementById('openNewMeetingModal').addEventListener('click', () => openModal());
+            feather.replace();
+        }
+
+        // Modal open (notify parent window)
+        function openModal(editData = null) {
+            isEditMode = !!editData;
+            currentMeetingId = editData ? editData.id : null;
+            document.getElementById('modalTitle').textContent = isEditMode ? 'Edit Meeting' : 'New Meeting';
+            form.reset();
+            if (isEditMode) {
+                titleInput.value = editData.title;
+                startDateTime.value = editData.startDateTime;
+                endDateTime.value = editData.startDateTime;
+                timeZone.value = editData.timeZone;
+                allDay.checked = editData.allDay;
+                if (editData.recurrence) {
+                    recurrencePatternInputs.forEach(input => {
+                        input.checked = input.value === editData.recurrence.pattern;
+                    });
+                    recurInterval.value = editData.recurrence.interval;
+                    recurTuesday.checked = editData.recurrence.days.includes('Tuesday');
+                    recurrenceStartDate.value = editData.recurrence.startDate;
+                    recurrenceEndInputs.forEach(input => {
+                        input.checked = input.value === editData.recurrence.endType;
+                    });
+                    recurrenceEndDate.value = editData.recurrence.endDate || '';
+                    recurrenceOccurrences.value = editData.recurrence.occurrences || 10;
+                }
+            } else {
+                startDateTime.value = '2025-09-30T12:30';
+                endDateTime.value = '2025-09-30T13:00';
+                timeZone.value = 'Africa/Lagos';
+                allDay.checked = false;
+                recurrencePatternInputs.forEach(input => {
+                    input.checked = input.value === 'Weekly';
+                });
+                recurInterval.value = '1';
+                recurTuesday.checked = true;
+                recurrenceStartDate.value = '2025-09-30';
+                recurrenceEndInputs.forEach(input => {
+                    input.checked = input.value === 'byDate';
+                });
+                recurrenceEndDate.value = '2026-03-17';
+                recurrenceOccurrences.value = '10';
+            }
+            updateRecurrenceTime();
+            modal.style.display = 'flex';
+            modal.style.zIndex = '999998';
+            window.parent.postMessage({ type: 'toggleModalZIndex', isOpen: true }, '*');
+            setTimeout(() => modal.classList.add('show'), 10);
+        }
+
+        // Modal close (notify parent window)
+        function closeModal() {
+            modal.classList.remove('show');
+            setTimeout(() => {
+                modal.style.display = 'none';
+                window.parent.postMessage({ type: 'toggleModalZIndex', isOpen: false }, '*');
+            }, 300);
+            isEditMode = false;
+            currentMeetingId = null;
+        }
+
+        // Submit form
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = {
+                title: titleInput.value,
+                startDateTime: startDateTime.value,
+                endDateTime: endDateTime.value,
+                timeZone: timeZone.value,
+                allDay: allDay.checked,
+                status: 'Scheduled',
+                recurrence: {
+                    pattern: Array.from(recurrencePatternInputs).find(input => input.checked).value,
+                    interval: parseInt(recurInterval.value),
+                    days: recurTuesday.checked ? ['Tuesday'] : [],
+                    startDate: recurrenceStartDate.value,
+                    endType: Array.from(recurrenceEndInputs).find(input => input.checked).value,
+                    endDate: recurrenceEndDate.value,
+                    occurrences: parseInt(recurrenceOccurrences.value) || null
+                }
+            };
+            if (!formData.title || !formData.startDateTime || !formData.endDateTime || !formData.recurrence.startDate) {
+                Toastify({ text: 'Please fill all required fields', style: { background: '#ef4444' } }).showToast();
+                return;
+            }
+            if (isEditMode) {
+                mockMeetings[currentMeetingId] = formData;
+            } else {
+                mockMeetings[nextMeetingId] = formData;
+                nextMeetingId++;
+            }
+            Toastify({ text: isEditMode ? 'Meeting updated!' : 'Meeting created!', style: { background: '#10b981' } }).showToast();
+            closeModal();
+            refreshMeetingsSection();
+        });
+
+        // Delegated events
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.edit-meeting-btn')) {
+                const row = e.target.closest('tr');
+                const id = row.dataset.meetingId;
+                const m = mockMeetings[id];
+                if (m) {
+                    m.id = id;
+                    openModal(m);
+                }
+            }
+
+            if (e.target.closest('.delete-meeting-btn')) {
+                const row = e.target.closest('tr');
+                if (confirm('Delete this meeting?')) {
+                    delete mockMeetings[row.dataset.meetingId];
+                    Toastify({ text: 'Meeting deleted', style: { background: '#10b981' } }).showToast();
+                    refreshMeetingsSection();
+                }
+            }
+
+            if (e.target.closest('#closeModal') || e.target.closest('#cancelModal')) {
+                closeModal();
+            }
+        });
+
+        // Escape key to close modal
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.style.display === 'flex') closeModal();
+        });
+    </script>
+</body>
+</html>

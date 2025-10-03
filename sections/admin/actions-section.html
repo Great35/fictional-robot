@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actions Section</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="bg-gray-50">
+    <div id="actionsSection" class="section p-4">
+        <!-- Table content to be refreshed -->
+        <div id="actionsTable" class="bg-white rounded-xl shadow-md p-6 animate-card">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-bold text-gray-800">Actions</h2>
+                <button id="openNewActionModal" class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg smooth-transition flex items-center">
+                    <i data-feather="plus" class="mr-2"></i> Add Action Item
+                </button>
+            </div>
+            <p class="text-gray-600 mb-6">Manage tasks and action items assigned to teams.</p>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-gray-200">
+                            <th class="py-3 px-4 text-sm font-medium text-gray-500">Task</th>
+                            <th class="py-3 px-4 text-sm font-medium text-gray-500">Assigned To</th>
+                            <th class="py-3 px-4 text-sm font-medium text-gray-500">Due Date</th>
+                            <th class="py-3 px-4 text-sm font-medium text-gray-500">Status</th>
+                            <th class="py-3 px-4 text-sm font-medium text-gray-500">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="actionsTableBody">
+                        <tr class="border-b border-gray-200 hover:bg-gray-50 transition-colors" data-action-id="1">
+                            <td class="py-3 px-4 text-sm text-gray-800">Update Documentation</td>
+                            <td class="py-3 px-4 text-sm text-gray-600">John Doe</td>
+                            <td class="py-3 px-4 text-sm text-gray-600">2025-10-10</td>
+                            <td class="py-3 px-4"><span class="px-2 py-1 bg-yellow-50 text-yellow-500 text-xs rounded-full">In Progress</span></td>
+                            <td class="py-3 px-4">
+                                <button class="edit-action-btn text-blue-500 hover:text-blue-600 mr-2">
+                                    <i data-feather="edit" class="w-4 h-4"></i>
+                                </button>
+                                <button class="delete-action-btn text-red-500 hover:text-red-600">
+                                    <i data-feather="trash-2" class="w-4 h-4"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-50 transition-colors" data-action-id="2">
+                            <td class="py-3 px-4 text-sm text-gray-800">Review Code</td>
+                            <td class="py-3 px-4 text-sm text-gray-600">Jane Smith</td>
+                            <td class="py-3 px-4 text-sm text-gray-600">2025-10-05</td>
+                            <td class="py-3 px-4"><span class="px-2 py-1 bg-red-50 text-red-500 text-xs rounded-full">Overdue</span></td>
+                            <td class="py-3 px-4">
+                                <button class="edit-action-btn text-blue-500 hover:text-blue-600 mr-2">
+                                    <i data-feather="edit" class="w-4 h-4"></i>
+                                </button>
+                                <button class="delete-action-btn text-red-500 hover:text-red-600">
+                                    <i data-feather="trash-2" class="w-4 h-4"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- New/Edit Action Modal -->
+        <div id="actionModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center transition-opacity duration-300 z-[999998]" style="display: none;">
+            <div class="bg-white rounded-lg shadow-lg w-full max-w-[358px] sm:max-w-[410px] md:max-w-[461px] p-2 sm:p-3 transform transition-all duration-300 z-[999999]">
+                <div class="flex items-center justify-between mb-1 sm:mb-2">
+                    <h2 class="text-2xs sm:text-base font-bold text-gray-800" id="modalTitle">New Action Item</h2>
+                    <button class="text-gray-500 hover:text-gray-700 text-lg sm:text-xl font-semibold" id="closeModal">&times;</button>
+                </div>
+                <div class="mb-1 sm:mb-2">
+                    <form id="actionForm">
+                        <div class="mb-1 sm:mb-2">
+                            <label class="block text-2xs sm:text-xs font-medium text-gray-700 mb-0.5 sm:mb-1" for="actionTask">Task</label>
+                            <input type="text" id="actionTask" class="w-full border border-gray-300 rounded-lg px-1.5 sm:px-2 py-0.5 sm:py-1 text-2xs sm:text-xs focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter task description" required>
+                        </div>
+                        <div class="mb-1 sm:mb-2">
+                            <label class="block text-2xs sm:text-xs font-medium text-gray-700 mb-0.5 sm:mb-1" for="assignedTo">Assigned To</label>
+                            <select id="assignedTo" class="w-full border border-gray-300 rounded-lg px-1.5 sm:px-2 py-0.5 sm:py-1 text-2xs sm:text-xs focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                <option value="">Select assignee</option>
+                                <option value="john-doe">John Doe</option>
+                                <option value="jane-smith">Jane Smith</option>
+                                <option value="bob-lee">Bob Lee</option>
+                                <option value="alice-johnson">Alice Johnson</option>
+                                <option value="charlie-brown">Charlie Brown</option>
+                            </select>
+                        </div>
+                        <div class="mb-1 sm:mb-2">
+                            <label class="block text-2xs sm:text-xs font-medium text-gray-700 mb-0.5 sm:mb-1" for="dueDate">Due Date</label>
+                            <input type="date" id="dueDate" class="w-24 sm:w-32 border border-gray-300 rounded-lg px-1.5 sm:px-2 py-0.5 sm:py-1 text-2xs sm:text-xs focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        </div>
+                        <div class="mb-1 sm:mb-2">
+                            <label class="block text-2xs sm:text-xs font-medium text-gray-700 mb-0.5 sm:mb-1" for="actionStatus">Status</label>
+                            <select id="actionStatus" class="w-full border border-gray-300 rounded-lg px-1.5 sm:px-2 py-0.5 sm:py-1 text-2xs sm:text-xs focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                <option value="In Progress">In Progress</option>
+                                <option value="Overdue">Overdue</option>
+                                <option value="Completed">Completed</option>
+                            </select>
+                        </div>
+                        <div class="mb-1 sm:mb-2">
+                            <label class="block text-2xs sm:text-xs font-medium text-gray-700 mb-0.5 sm:mb-1" for="actionNotes">Notes (Optional)</label>
+                            <textarea id="actionNotes" class="w-full border border-gray-300 rounded-lg px-1.5 sm:px-2 py-0.5 sm:py-1 text-2xs sm:text-xs focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter additional notes..."></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="flex justify-end space-x-1 sm:space-x-2">
+                    <button type="button" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-0.5 sm:py-1 px-2 sm:px-3 rounded-lg transition-colors duration-200 text-2xs sm:text-xs" id="cancelModal">Cancel</button>
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-0.5 sm:py-1 px-2 sm:px-3 rounded-lg transition-colors duration-200 text-2xs sm:text-xs" form="actionForm" id="saveModal">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Feather icons
+        feather.replace();
+
+        // Modal and form elements
+        const modal = document.getElementById('actionModal');
+        const form = document.getElementById('actionForm');
+        const taskInput = document.getElementById('actionTask');
+        const assignedToSelect = document.getElementById('assignedTo');
+        const dueDateInput = document.getElementById('dueDate');
+        const statusSelect = document.getElementById('actionStatus');
+        const notesTextarea = document.getElementById('actionNotes');
+        let isEditMode = false;
+        let currentActionId = null;
+
+        // Mock action data
+        const mockActions = {
+            1: { task: 'Update Documentation', assignedTo: 'john-doe', dueDate: '2025-10-10', status: 'In Progress', notes: 'Update API docs.' },
+            2: { task: 'Review Code', assignedTo: 'jane-smith', dueDate: '2025-10-05', status: 'Overdue', notes: 'Check backend code.' }
+        };
+        let nextActionId = 3;
+
+        // Mock member data (reused from meetings-section.html)
+        const mockMembers = {
+            'john-doe': { name: 'John Doe' },
+            'jane-smith': { name: 'Jane Smith' },
+            'bob-lee': { name: 'Bob Lee' },
+            'alice-johnson': { name: 'Alice Johnson' },
+            'charlie-brown': { name: 'Charlie Brown' }
+        };
+
+        // Refresh actions table
+        function refreshActionsTable() {
+            const tableBody = document.getElementById('actionsTableBody');
+            tableBody.innerHTML = Object.entries(mockActions).map(([id, a]) => `
+                <tr class="border-b border-gray-200 hover:bg-gray-50 transition-colors" data-action-id="${id}">
+                    <td class="py-3 px-4 text-sm text-gray-800">${a.task}</td>
+                    <td class="py-3 px-4 text-sm text-gray-600">${mockMembers[a.assignedTo]?.name || 'Unknown'}</td>
+                    <td class="py-3 px-4 text-sm text-gray-600">${a.dueDate}</td>
+                    <td class="py-3 px-4">
+                        <span class="px-2 py-1 text-xs rounded-full 
+                            ${a.status === 'In Progress' ? 'bg-yellow-50 text-yellow-500' : 
+                              a.status === 'Overdue' ? 'bg-red-50 text-red-500' : 
+                              'bg-green-50 text-green-500'}">
+                            ${a.status}
+                        </span>
+                    </td>
+                    <td class="py-3 px-4">
+                        <button class="edit-action-btn text-blue-500 hover:text-blue-600 mr-2">
+                            <i data-feather="edit" class="w-4 h-4"></i>
+                        </button>
+                        <button class="delete-action-btn text-red-500 hover:text-red-600">
+                            <i data-feather="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    </td>
+                </tr>`).join('');
+            feather.replace();
+        }
+
+        // Open modal
+        function openModal(editData = null) {
+            isEditMode = !!editData;
+            currentActionId = editData ? editData.id : null;
+            document.getElementById('modalTitle').textContent = isEditMode ? 'Edit Action Item' : 'New Action Item';
+            form.reset();
+            if (isEditMode) {
+                taskInput.value = editData.task;
+                assignedToSelect.value = editData.assignedTo;
+                dueDateInput.value = editData.dueDate;
+                statusSelect.value = editData.status;
+                notesTextarea.value = editData.notes || '';
+            }
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('show'), 10);
+        }
+
+        // Close modal
+        function closeModal() {
+            modal.classList.remove('show');
+            setTimeout(() => modal.style.display = 'none', 300);
+            isEditMode = false;
+            currentActionId = null;
+        }
+
+        // Submit form
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = {
+                task: taskInput.value,
+                assignedTo: assignedToSelect.value,
+                dueDate: dueDateInput.value,
+                status: statusSelect.value,
+                notes: notesTextarea.value
+            };
+            if (!formData.task || !formData.assignedTo || !formData.dueDate || !formData.status) {
+                Toastify({ text: 'Please fill all required fields', style: { background: '#ef4444' } }).showToast();
+                return;
+            }
+            if (isEditMode) {
+                mockActions[currentActionId] = formData;
+            } else {
+                mockActions[nextActionId] = formData;
+                nextActionId++;
+            }
+            Toastify({ text: isEditMode ? 'Action updated!' : 'Action created!', style: { background: '#10b981' } }).showToast();
+            closeModal();
+            refreshActionsTable();
+        });
+
+        // Delegated events
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('#openNewActionModal')) {
+                openModal();
+            }
+            if (e.target.closest('.edit-action-btn')) {
+                const row = e.target.closest('tr');
+                const id = row.dataset.actionId;
+                const a = mockActions[id];
+                if (a) {
+                    a.id = id;
+                    openModal(a);
+                }
+            }
+            if (e.target.closest('.delete-action-btn')) {
+                const row = e.target.closest('tr');
+                if (confirm('Delete this action item?')) {
+                    delete mockActions[row.dataset.actionId];
+                    Toastify({ text: 'Action deleted', style: { background: '#10b981' } }).showToast();
+                    refreshActionsTable();
+                }
+            }
+            if (e.target.closest('#closeModal') || e.target.closest('#cancelModal')) {
+                closeModal();
+            }
+        });
+
+        // Escape key to close modal
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.style.display === 'flex') closeModal();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LookSharp Manager Pro - User Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="scripts.js"></script>
+</head>
+<body class="bg-gray-50">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <div class="hidden md:flex md:flex-shrink-0">
+            <div class="flex flex-col w-64 bg-white border-r border-gray-200">
+                <div class="flex items-center justify-center h-16 px-4 border-b border-gray-200">
+                    <div class="flex items-center">
+                        <i data-feather="book-open" class="text-blue-500 mr-2"></i>
+                        <span class="text-xl font-bold text-gray-800">LookSharp</span>
+                    </div>
+                </div>
+                <div class="flex flex-col flex-grow p-4 overflow-y-auto">
+                    <nav class="flex-1 space-y-2" id="userNav">
+                        <a href="#" data-section="dashboard" class="sidebar-item active flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg">
+                            <i data-feather="home" class="mr-3 text-blue-500"></i>
+                            Dashboard
+                        </a>
+                        <a href="#" data-section="meetings" class="sidebar-item flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg">
+                            <i data-feather="calendar" class="mr-3"></i>
+                            Meetings
+                        </a>
+                        <a href="#" data-section="actions" class="sidebar-item flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg">
+                            <i data-feather="check-circle" class="mr-3"></i>
+                            Actions
+                        </a>
+                        <a href="#" data-section="audits" class="sidebar-item flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg">
+                            <i data-feather="file-text" class="mr-3"></i>
+                            Audits
+                        </a>
+                        <a href="#" data-section="organizer" class="sidebar-item flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg">
+                            <i data-feather="bookmark" class="mr-3"></i>
+                            Organizer
+                        </a>
+                    </nav>
+                </div>
+                <div class="p-4 border-t border-gray-200">
+                    <div class="flex items-center">
+                        <img class="w-10 h-10 rounded-full mr-3" src="http://static.photos/people/200x200/2" alt="Profile">
+                        <div>
+                            <p class="text-sm font-medium text-gray-800">User</p>
+                            <p class="text-xs text-gray-500">User</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-col space-y-2">
+                        <button class="relative flex items-center px-4 py-3 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100">
+                            <i data-feather="bell" class="mr-3"></i>
+                            Notifications
+                            <span class="absolute top-2 right-4 w-2 h-2 bg-red-500 rounded-full"></span>
+                        </button>
+                        <button onclick="logout()" class="flex items-center px-4 py-3 text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 rounded-lg smooth-transition">
+                            <i data-feather="log-out" class="mr-3"></i>
+                            Log Out
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <main class="flex-1 h-full p-0">
+                <iframe id="sectionFrame" src="sections/user/dashboard-section.html" class="w-full h-full border-none" title="Section Content"></iframe>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Feather icons
+        feather.replace();
+
+        // Track current section
+        let currentSectionId = 'dashboard';
+
+        // Toggle sidebar on mobile
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.md\\:flex');
+            sidebar.classList.toggle('hidden');
+        }
+
+        // Switch section by updating iframe src
+        function switchSection(sectionId) {
+            const sectionFrame = document.getElementById('sectionFrame');
+
+            // Update active sidebar item
+            document.querySelectorAll('.sidebar-item').forEach(item => item.classList.remove('active'));
+            document.querySelector(`[data-section="${sectionId}"]`).classList.add('active');
+
+            // Update iframe source
+            try {
+                sectionFrame.src = `sections/user/${sectionId}-section.html`;
+                currentSectionId = sectionId;
+            } catch (error) {
+                console.error('Error loading section:', error);
+                Toastify({
+                    text: `Failed to load ${sectionId} section`,
+                    duration: 3000,
+                    style: { background: 'linear-gradient(to right, #ef4444, #dc2626)' }
+                }).showToast();
+            }
+        }
+
+        // Refresh current section
+        window.refreshSection = function() {
+            switchSection(currentSectionId);
+        };
+
+        // Logout with animation
+        function logout() {
+            document.body.classList.add('opacity-0');
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 300);
+        }
+
+        // Handle user removal event from iframe
+        window.addEventListener('message', (event) => {
+            if (event.data.type === 'removeUser') {
+                Toastify({
+                    text: `User ${event.data.userName} removed successfully`,
+                    duration: 3000,
+                    style: { background: 'linear-gradient(to right, #22c55e, #16a34a)' }
+                }).showToast();
+                window.refreshSection(); // Refresh dashboard to reflect changes
+            }
+        });
+
+        // Attach click event to nav items
+        document.getElementById('userNav').addEventListener('click', (e) => {
+            const section = e.target.closest('.sidebar-item')?.dataset.section;
+            if (section) {
+                e.preventDefault();
+                switchSection(section);
+            }
+        });
+
+        // Load dashboard on page load
+        document.addEventListener('DOMContentLoaded', () => switchSection('dashboard'));
+    </script>
+</body>
+</html>
